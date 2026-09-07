@@ -11,36 +11,49 @@
   "type": "header",
   "name": "t:names.header",
   "sections": {
-    "header_announcements_9jGBFp": {
-      "type": "header-announcements",
+    "icon_text_bar_xqDVan": {
+      "type": "icon-text-bar",
       "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
+        "item_QzjyJX": {
+          "type": "item",
           "settings": {
-            "text": "Welcome to our store",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none",
-            "text_color": ""
-          },
-          "blocks": {}
+            "icon": "shield",
+            "label": "Firefighter Owned & Operated"
+          }
+        },
+        "item_zwJPDU": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "label": "Free Shipping on Orders Over $75"
+          }
+        },
+        "item_768bex": {
+          "type": "item",
+          "settings": {
+            "icon": "heart",
+            "label": "Supporting Our Firefighter Family"
+          }
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "item_QzjyJX",
+        "item_zwJPDU",
+        "item_768bex"
       ],
-      "name": "t:names.announcement_bar",
+      "name": "Icon with text bar",
       "settings": {
-        "speed": 5,
-        "section_width": "page-width",
-        "background_color": "{{ settings.color_palette.background }}",
-        "divider_width": 1,
-        "divider_color": "{{ settings.color_palette.color2 }}",
-        "padding-block-start": 15,
-        "padding-block-end": 15
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "slides_desktop": "3",
+        "slides_mobile": "1",
+        "navigation": "mobile",
+        "background_color": "#FF1675",
+        "text_color": "#FFFFFF",
+        "icon_size": 20,
+        "font_size": 12,
+        "padding": 10,
+        "accessibility_label": "Store benefits"
       }
     },
     "header_section": {
@@ -128,7 +141,7 @@
     }
   },
   "order": [
-    "header_announcements_9jGBFp",
+    "icon_text_bar_xqDVan",
     "header_section"
   ]
 }
