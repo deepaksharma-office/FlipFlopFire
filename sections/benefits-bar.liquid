@@ -1,0 +1,856 @@
+{% liquid
+  assign s = section.settings
+  assign desktop_content = false
+%}
+{% capture items %}
+  {% for block in section.blocks %}
+    {% render 'benefits-bar-item', block: block %}
+    {% liquid
+      if block.settings.text != blank or block.settings.image != blank
+        assign desktop_content = true
+      endif
+      if block.settings.icon != blank and block.settings.icon != 'none'
+        assign desktop_content = true
+      endif
+    %}
+  {% endfor %}
+{% endcapture %}
+{% assign items = items | strip %}
+{% if items != blank %}
+  {{ 'benefits-bar.css' | asset_url | stylesheet_tag }}
+  <div
+    class="benefits-bar benefits-bar--{{ s.mobile_layout }}{% if s.dividers %} benefits-bar--dividers{% endif %}{% unless desktop_content %} benefits-bar--mobile-only{% endunless %}"
+    style="--benefits-background: {{ s.background }}; --benefits-color: {{ s.text_color }}; --benefits-border-color: {{ s.border_color }}; --benefits-border-width: {{ s.border_width }}px; --benefits-width: {{ s.content_width }}px; --benefits-padding: {{ s.padding }}px; --benefits-padding-mobile: {{ s.padding_mobile }}px; --benefits-alignment: {{ s.alignment }}; --benefits-spacing: {{ s.spacing }}px; --benefits-divider-color: {{ s.divider_color }}; --benefits-divider-width: {{ s.divider_width }}px; --benefits-icon-color: {{ s.icon_color }}; --benefits-icon-size: {{ s.icon_size }}px; --benefits-icon-size-mobile: {{ s.icon_size_mobile }}px; --benefits-icon-gap: {{ s.icon_gap }}px; --benefits-font-size: {{ s.font_size }}px; --benefits-font-size-mobile: {{ s.font_size_mobile }}px; --benefits-font-weight: {{ s.font_weight }}; --benefits-line-height: {{ s.line_height }}; --benefits-slide-width: {{ s.slide_width }};"
+  >
+    <div class="benefits-bar__inner">
+      <ul class="benefits-bar__list" role="list" aria-label="{{ s.label | escape }}" {% if s.mobile_layout == 'slide' %}tabindex="0"{% endif %}>
+        {{ items }}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Benefits / Feature Bar",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#10131B"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Top border color",
+      "default": "#FF1675"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Top border width",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content maximum width",
+      "min": 800,
+      "max": 1800,
+      "step": 20,
+      "default": 1280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Desktop vertical padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile vertical padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Item alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Item spacing",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "dividers",
+      "label": "Show dividers",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#2A3040"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider width",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "stack",
+          "label": "Stack"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "select",
+      "id": "slide_width",
+      "label": "Mobile slide width",
+      "options": [
+        {
+          "value": "80%",
+          "label": "80% (more next-item preview)"
+        },
+        {
+          "value": "85%",
+          "label": "85%"
+        },
+        {
+          "value": "90%",
+          "label": "90% (less next-item preview)"
+        }
+      ],
+      "default": "85%"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Accessibility label",
+      "default": "Store benefits"
+    },
+    {
+      "type": "header",
+      "content": "Default icons"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#FF1675"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Desktop icon size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "default": 22,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Mobile icon size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "label": "Icon and text gap",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Default typography"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#F3F4F6"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Desktop text size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Mobile text size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Line height",
+      "options": [
+        {
+          "value": "1.2",
+          "label": "Compact"
+        },
+        {
+          "value": "1.4",
+          "label": "Normal"
+        },
+        {
+          "value": "1.6",
+          "label": "Relaxed"
+        }
+      ],
+      "default": "1.4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit text",
+          "default": "Firefighter Owned & Operated"
+        },
+        {
+          "type": "header",
+          "content": "Icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_source",
+          "label": "Desktop icon source",
+          "options": [
+            {
+              "value": "theme",
+              "label": "Theme icon"
+            },
+            {
+              "value": "image",
+              "label": "Custom image"
+            }
+          ],
+          "default": "theme"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Theme icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:options.none"
+            },
+            {
+              "value": "apple",
+              "label": "t:options.apple"
+            },
+            {
+              "value": "arrow",
+              "label": "t:options.arrow"
+            },
+            {
+              "value": "banana",
+              "label": "t:options.banana"
+            },
+            {
+              "value": "bottle",
+              "label": "t:options.bottle"
+            },
+            {
+              "value": "box",
+              "label": "t:options.box"
+            },
+            {
+              "value": "carrot",
+              "label": "t:options.carrot"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "t:options.chat_bubble"
+            },
+            {
+              "value": "check_box",
+              "label": "t:options.check_box"
+            },
+            {
+              "value": "clipboard",
+              "label": "t:options.clipboard"
+            },
+            {
+              "value": "dairy",
+              "label": "t:options.dairy"
+            },
+            {
+              "value": "dairy_free",
+              "label": "t:options.dairy_free"
+            },
+            {
+              "value": "dryer",
+              "label": "t:options.dryer"
+            },
+            {
+              "value": "eye",
+              "label": "t:options.eye"
+            },
+            {
+              "value": "fire",
+              "label": "t:options.fire"
+            },
+            {
+              "value": "gluten_free",
+              "label": "t:options.gluten_free"
+            },
+            {
+              "value": "heart",
+              "label": "t:options.heart"
+            },
+            {
+              "value": "iron",
+              "label": "t:options.iron"
+            },
+            {
+              "value": "leaf",
+              "label": "t:options.leaf"
+            },
+            {
+              "value": "leather",
+              "label": "t:options.leather"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "t:options.lightning_bolt"
+            },
+            {
+              "value": "lipstick",
+              "label": "t:options.lipstick"
+            },
+            {
+              "value": "lock",
+              "label": "t:options.lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "t:options.map_pin"
+            },
+            {
+              "value": "nut_free",
+              "label": "t:options.nut_free"
+            },
+            {
+              "value": "pants",
+              "label": "t:options.pants"
+            },
+            {
+              "value": "paw_print",
+              "label": "t:options.paw_print"
+            },
+            {
+              "value": "pepper",
+              "label": "t:options.pepper"
+            },
+            {
+              "value": "perfume",
+              "label": "t:options.perfume"
+            },
+            {
+              "value": "plane",
+              "label": "t:options.plane"
+            },
+            {
+              "value": "plant",
+              "label": "t:options.plant"
+            },
+            {
+              "value": "price_tag",
+              "label": "t:options.price_tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "t:options.question_mark"
+            },
+            {
+              "value": "recycle",
+              "label": "t:options.recycle"
+            },
+            {
+              "value": "return",
+              "label": "t:options.return"
+            },
+            {
+              "value": "ruler",
+              "label": "t:options.ruler"
+            },
+            {
+              "value": "serving_dish",
+              "label": "t:options.serving_dish"
+            },
+            {
+              "value": "shirt",
+              "label": "t:options.shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "t:options.shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "t:options.silhouette"
+            },
+            {
+              "value": "bluesky",
+              "label": "t:options.social_bluesky"
+            },
+            {
+              "value": "facebook",
+              "label": "t:options.social_facebook"
+            },
+            {
+              "value": "instagram",
+              "label": "t:options.social_instagram"
+            },
+            {
+              "value": "linkedin",
+              "label": "t:options.social_linkedin"
+            },
+            {
+              "value": "pinterest",
+              "label": "t:options.social_pinterest"
+            },
+            {
+              "value": "snapchat",
+              "label": "t:options.social_snapchat"
+            },
+            {
+              "value": "spotify",
+              "label": "t:options.social_spotify"
+            },
+            {
+              "value": "threads",
+              "label": "t:options.social_threads"
+            },
+            {
+              "value": "tiktok",
+              "label": "t:options.social_tiktok"
+            },
+            {
+              "value": "tumblr",
+              "label": "t:options.social_tumblr"
+            },
+            {
+              "value": "twitter",
+              "label": "t:options.social_twitter"
+            },
+            {
+              "value": "vimeo",
+              "label": "t:options.social_vimeo"
+            },
+            {
+              "value": "youtube",
+              "label": "t:options.social_youtube"
+            },
+            {
+              "value": "whatsapp",
+              "label": "t:options.social_whatsapp"
+            },
+            {
+              "value": "snowflake",
+              "label": "t:options.snowflake"
+            },
+            {
+              "value": "star",
+              "label": "t:options.star"
+            },
+            {
+              "value": "stopwatch",
+              "label": "t:options.stopwatch"
+            },
+            {
+              "value": "truck",
+              "label": "t:options.truck"
+            },
+            {
+              "value": "washing",
+              "label": "t:options.washing"
+            }
+          ],
+          "default": "fire"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom desktop icon"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_custom",
+          "label": "Use custom mobile icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Custom mobile icon"
+        },
+        {
+          "type": "text",
+          "id": "icon_label",
+          "label": "Icon accessibility label"
+        },
+        {
+          "type": "header",
+          "content": "Style overrides"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Desktop icon size",
+          "min": 0,
+          "max": 64,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "info": "0 uses the section default."
+        },
+        {
+          "type": "range",
+          "id": "icon_size_mobile",
+          "label": "Mobile icon size",
+          "min": 0,
+          "max": 64,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "info": "0 uses the section default."
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "label": "Icon width",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "default": 0,
+          "unit": "px",
+          "info": "0 uses the icon size. Useful for wide image icons."
+        },
+        {
+          "type": "range",
+          "id": "icon_gap",
+          "label": "Icon and text gap",
+          "min": -1,
+          "max": 30,
+          "step": 1,
+          "default": -1,
+          "unit": "px",
+          "info": "-1 uses the section default."
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Desktop text size",
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "default": 0,
+          "unit": "px",
+          "info": "0 uses the section default."
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile",
+          "label": "Mobile text size",
+          "min": 0,
+          "max": 24,
+          "step": 1,
+          "default": 0,
+          "unit": "px",
+          "info": "0 uses the section default."
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            {
+              "value": "inherit",
+              "label": "Section default"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semibold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "inherit"
+        },
+        {
+          "type": "select",
+          "id": "line_height",
+          "label": "Line height",
+          "options": [
+            {
+              "value": "inherit",
+              "label": "Section default"
+            },
+            {
+              "value": "1.2",
+              "label": "Compact"
+            },
+            {
+              "value": "1.4",
+              "label": "Normal"
+            },
+            {
+              "value": "1.6",
+              "label": "Relaxed"
+            }
+          ],
+          "default": "inherit"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Item alignment",
+          "options": [
+            {
+              "value": "inherit",
+              "label": "Section default"
+            },
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ],
+          "default": "inherit"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "Right"
+            }
+          ],
+          "default": "start"
+        },
+        {
+          "type": "range",
+          "id": "text_width",
+          "label": "Maximum text width",
+          "min": 80,
+          "max": 500,
+          "step": 10,
+          "default": 260,
+          "unit": "px"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "label": "Desktop vertical padding",
+          "min": 0,
+          "max": 32,
+          "step": 2,
+          "default": 6,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_mobile",
+          "label": "Mobile vertical padding",
+          "min": 0,
+          "max": 32,
+          "step": 2,
+          "default": 12,
+          "unit": "px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits / Feature Bar",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "fire",
+            "text": "Firefighter Owned & Operated"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "star",
+            "text": "Premium Quality, Built to Last"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "map_pin",
+            "text": "Designed in the USA"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "text": "Free Shipping Over $75"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+{% doc %}
+  Outputs responsive position variables for a cinematic hero element.
+  @param {object} settings - Block or section settings.
+  @param {string} [prefix] - Setting prefix for image or review controls.
+{% enddoc %}
+{% liquid
+  assign key_prefix = prefix | default: ''
+  assign devices = 'desktop,tablet,mobile' | split: ','
+%}
+{% for device in devices %}
+  {% liquid
+    assign x_key = key_prefix | append: 'x_' | append: device
+    assign y_key = key_prefix | append: 'y_' | append: device
+  %}
+  --x-{{ device }}: {{ settings[x_key] | default: 0 }}px;
+  --y-{{ device }}: {{ settings[y_key] | default: 0 }}px;
+{% endfor %}

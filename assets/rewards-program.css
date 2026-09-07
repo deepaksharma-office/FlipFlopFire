@@ -1,0 +1,81 @@
+.rewards { display: block; position: relative; isolation: isolate; background: var(--rewards-background); color: var(--color-foreground, #fff); font-family: var(--font-body--family); }
+.rewards *, .rewards *::before { box-sizing: border-box; }
+.rewards__background, .rewards__overlay { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.rewards__background img { width: 100%; height: 100%; object-fit: var(--background-fit); object-position: var(--background-position); }
+.rewards__overlay { background: var(--overlay-color); opacity: var(--overlay-opacity); }
+.rewards__inner { max-width: var(--rewards-width); margin-inline: auto; padding: var(--padding-top) var(--padding-x) var(--padding-bottom); display: flex; flex-direction: column; gap: var(--group-gap); }
+.rewards__intro { display: flex; flex-direction: column; min-width: 0; }
+.rewards__block { width: min(100%, var(--block-width)); min-width: 0; align-self: var(--block-align); text-align: var(--block-align); color: var(--block-color); font-size: clamp(var(--font-mobile), calc(var(--font-mobile) + (100vw - 375px) * 0.025), var(--font-desktop)); font-weight: var(--font-weight); line-height: var(--line-height); letter-spacing: var(--letter-spacing); text-transform: var(--text-case); margin-block: var(--space-top) var(--space-bottom); overflow-wrap: anywhere; }
+.rewards__eyebrow, .rewards__heading { margin: 0; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; }
+.rewards__heading { font-family: var(--font-heading--family); }
+.rewards__heading > span { display: block; }
+.rewards__accent { color: var(--accent-one); }
+@supports (background-clip: text) {
+  .rewards__accent--gradient { background: linear-gradient(var(--accent-angle), var(--accent-one), var(--accent-two)); background-clip: text; -webkit-text-fill-color: transparent; }
+}
+.rewards__description > :first-child, .rewards__card-description > :first-child { margin-top: 0; }
+.rewards__description > :last-child, .rewards__card-description > :last-child { margin-bottom: 0; }
+.rewards__description a, .rewards__card-description a { color: inherit; text-decoration: underline; }
+.rewards__cards {
+  --columns: var(--columns-desktop);
+  display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  gap: var(--card-grid-gap); width: 100%; max-width: calc(var(--columns) * var(--card-max-width) + (var(--columns) - 1) * var(--card-grid-gap));
+  margin: 0 auto; padding: 0; list-style: none;
+}
+.rewards__card-slot { --active-number-size: var(--number-size); display: flex; min-width: 0; padding-top: var(--badge-reserve); --card-accent: var(--rewards-accent, var(--color-primary-button-background, var(--color-foreground))); }
+.rewards__card { position: relative; display: flex; flex-direction: column; align-items: var(--card-align); flex: 1; min-width: 0; min-height: var(--card-height); padding: var(--card-padding); gap: var(--card-gap); background: var(--card-background); border: var(--card-border-width) solid var(--card-border); border-radius: var(--card-radius); box-shadow: 0 12px 32px rgb(0 0 0 / var(--card-shadow)); text-align: var(--card-align); overflow-wrap: anywhere; }
+.rewards__number-position { align-self: var(--number-align); position: relative; left: clamp(-24px, var(--number-x), 24px); width: min(var(--active-number-size), calc(100% - 48px)); margin-inline: 24px; margin-top: calc(-1 * var(--card-padding) - var(--active-number-size) / 2 + var(--number-y)); }
+.rewards__number { display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--active-number-size); padding: 8px; border: var(--number-border-width) solid var(--number-border); border-radius: var(--number-radius); background: var(--number-background); color: var(--number-color); font-size: var(--number-font); font-weight: 700; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.rewards__number--gradient { background: linear-gradient(120deg, var(--number-background), var(--number-gradient-end)); }
+.rewards__icon { display: flex; width: var(--icon-size); max-width: 100%; height: var(--icon-size); color: var(--icon-color, var(--card-accent)); flex-shrink: 0; }
+.rewards__icon :is(img, svg) { width: 100%; height: 100%; object-fit: contain; }
+.rewards__icon--mobile { display: none; }
+.rewards__card-title { max-width: min(100%, var(--title-width)); margin: 0; font-family: var(--font-heading--family); font-size: var(--title-size); font-weight: var(--title-weight); color: var(--title-color); letter-spacing: var(--title-spacing); line-height: var(--title-line-height); text-transform: uppercase; }
+.rewards__icon + .rewards__card-title { margin-top: var(--icon-title-gap); }
+.rewards__card-description { max-width: min(100%, var(--description-width)); color: var(--description-color); font-size: var(--description-size); line-height: var(--description-line-height); }
+.rewards__card-title + .rewards__card-description { margin-top: var(--title-description-gap); }
+.rewards__actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: var(--cta-gap); }
+.rewards__block--button { width: auto; max-width: min(100%, var(--block-width)); margin-block: var(--space-top) var(--space-bottom); }
+.rewards__block--button-full { width: min(100%, var(--block-width)); }
+.rewards__button { display: inline-flex; justify-content: center; align-items: center; width: var(--button-width); max-width: 100%; min-height: 44px; padding: var(--button-py) var(--button-px); border: var(--button-border-width) solid var(--button-border); border-radius: var(--button-radius); background: var(--button-background); color: inherit; font: inherit; line-height: 1.4; text-decoration: none; white-space: normal; transition: transform 200ms ease, filter 200ms ease; }
+.rewards__button--gradient { background: linear-gradient(105deg, var(--gradient-start), var(--gradient-end)); }
+.rewards__button--outline { background: transparent; }
+.rewards a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+@media (hover: hover) {
+  .rewards__button--lift:hover { transform: translateY(-3px); }
+  .rewards__button--brighten:hover { filter: brightness(1.1); }
+}
+.rewards [data-hero-animation] { --enter-x: 0px; --enter-y: 0px; --enter-scale: 1; }
+.rewards [data-hero-animation='left'] { --enter-x: -12px; }
+.rewards [data-hero-animation='right'] { --enter-x: 12px; }
+.rewards [data-hero-animation='up'] { --enter-y: 16px; }
+.rewards [data-hero-animation='scale'] { --enter-scale: 0.94; }
+.rewards.is-animation-ready:not(.is-entered) [data-hero-animation] { opacity: 0; transform: translate(var(--enter-x), var(--enter-y)) scale(var(--enter-scale)); }
+.rewards.is-animation-ready.is-entered [data-hero-animation] { animation: rewards-enter var(--duration) cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both; }
+@keyframes rewards-enter { from { opacity: 0; transform: translate(var(--enter-x), var(--enter-y)) scale(var(--enter-scale)); } to { opacity: 1; transform: none; } }
+@media (min-width: 750px) {
+  .rewards--mobile-only, .rewards__cards--mobile-only, .rewards__card-slot--mobile-only { display: none; }
+}
+@media (min-width: 750px) and (max-width: 1099px) {
+  .rewards__inner { padding: var(--padding-top-tablet) var(--padding-x-tablet) var(--padding-bottom-tablet); }
+  .rewards__cards { --columns: var(--columns-tablet); }
+  .rewards__block { font-size: min(var(--font-desktop), calc(var(--font-mobile) * 1.25)); }
+}
+@media (max-width: 749px) {
+  .rewards__inner { padding: var(--padding-top-mobile) var(--padding-x-mobile) var(--padding-bottom-mobile); gap: min(var(--group-gap), 32px); }
+  .rewards__block { font-size: var(--font-mobile); }
+  .rewards__cards { --columns: 1; }
+  .rewards__card-slot { --active-number-size: var(--number-size-mobile); padding-top: var(--badge-reserve-mobile); }
+  .rewards__card { --card-padding: var(--card-padding-mobile); min-height: min(var(--card-height), 220px); }
+  .rewards__icon { width: var(--icon-size-mobile); height: var(--icon-size-mobile); }
+  .rewards__icon--has-mobile { display: none; }
+  .rewards__icon--mobile { display: flex; }
+  .rewards__card-title { font-size: var(--title-size-mobile); }
+  .rewards__card-description { font-size: var(--description-size-mobile); }
+  .rewards__actions { flex-direction: column; }
+  .rewards__block--button { width: min(100%, var(--block-width)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rewards [data-hero-animation] { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .rewards__button { transition: none; transform: none !important; }
+}

@@ -1,0 +1,82 @@
+{% doc %}
+  Uses the theme's Shopify customer newsletter form with optional first name.
+  @param {object} section - Newsletter section.
+{% enddoc %}
+{% liquid
+  assign s = section.settings
+  assign form_id = 'NewsletterCrew-' | append: section.id
+  assign email_id = form_id | append: '-email'
+  assign name_id = form_id | append: '-first-name'
+  assign error_id = form_id | append: '-error'
+  assign success_id = form_id | append: '-success'
+  assign email_label = 'blocks.email_signup.label' | t
+  assign name_label = 'blocks.contact_form.name' | t
+  if s.email_label != blank
+    assign email_label = s.email_label
+  endif
+  if s.first_name_label != blank
+    assign name_label = s.first_name_label
+  endif
+%}
+{% form 'customer', id: form_id, class: 'newsletter-crew__form' %}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  <input type="hidden" name="contact[id]" value="{{ form_id }}">
+  {% liquid
+    assign form_matches = false
+    if form.id == form_id or form.id == blank
+      assign form_matches = true
+    endif
+    assign has_errors = false
+    if form.errors and form_matches
+      assign has_errors = true
+    endif
+    assign success = false
+    if form.posted_successfully? and form_matches
+      assign success = true
+    endif
+    assign fields = 'first_name,email' | split: ','
+    if s.field_order == 'email_first'
+      assign fields = 'email,first_name' | split: ','
+    endif
+  %}
+  <div class="newsletter-crew__fields{% if s.show_first_name %} newsletter-crew__fields--with-name{% endif %}{% if s.field_order == 'email_first' %} newsletter-crew__fields--email-first{% endif %}">
+    {% for field in fields %}
+      {% if field == 'first_name' and s.show_first_name %}
+        <div class="newsletter-crew__field" {% if s.animate %}data-hero-animation="left"{% endif %} style="--delay: 350ms;">
+          <label class="visually-hidden" for="{{ name_id }}">{{ name_label | escape }}</label>
+          <input class="newsletter-crew__input" id="{{ name_id }}" name="contact[first_name]" type="text" autocomplete="given-name"
+            value="{{ form.first_name | default: customer.first_name | escape }}"
+            {% if s.first_name_placeholder != blank %}placeholder="{{ s.first_name_placeholder | escape }}"{% endif %}
+            {% if s.first_name_required %}required{% endif %}
+            {% if has_errors and form.errors contains 'first_name' %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}>
+        </div>
+      {% endif %}
+      {% if field == 'email' %}
+        <div class="newsletter-crew__field" {% if s.animate %}data-hero-animation="right"{% endif %} style="--delay: 420ms;">
+          <label class="visually-hidden" for="{{ email_id }}">{{ email_label | escape }}</label>
+          <input class="newsletter-crew__input" id="{{ email_id }}" name="contact[email]" type="email" autocomplete="email" autocorrect="off" autocapitalize="off" required
+            value="{{ form.email | default: customer.email | escape }}"
+            {% if s.email_placeholder != blank %}placeholder="{{ s.email_placeholder | escape }}"{% endif %}
+            {% if has_errors %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
+            {% if success %}aria-describedby="{{ success_id }}"{% endif %}>
+        </div>
+      {% endif %}
+    {% endfor %}
+    <div class="newsletter-crew__submit" {% if s.animate %}data-hero-animation="up"{% endif %} style="--delay: 490ms;">
+      <button class="newsletter-crew__button{% if s.button_gradient %} newsletter-crew__button--gradient{% endif %} newsletter-crew__button--{{ s.button_hover }}" type="submit">{{ s.button_label | escape }}</button>
+    </div>
+  </div>
+  {% if has_errors %}
+    <div class="newsletter-crew__message newsletter-crew__message--error" id="{{ error_id }}" role="alert" tabindex="-1">
+      {% if s.error_message != blank %}<p>{{ s.error_message | escape }}</p>{% endif %}
+      {{ form.errors | default_errors }}
+    </div>
+  {% endif %}
+  {% if success %}
+    <div class="newsletter-crew__message" id="{{ success_id }}" role="status" tabindex="-1">
+      {% assign success_message = s.success_message %}
+      {% if success_message == blank %}{% assign success_message = 'blocks.email_signup.success' | t %}{% endif %}
+      <p>{{ success_message | escape }}</p>
+    </div>
+  {% endif %}
+{% endform %}

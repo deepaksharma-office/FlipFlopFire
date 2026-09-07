@@ -1,0 +1,100 @@
+.benefits-bar {
+  background: var(--benefits-background);
+  color: var(--benefits-color);
+  border-block-start: var(--benefits-border-width) solid var(--benefits-border-color);
+  font-family: var(--font-body--family);
+  padding-block: var(--benefits-padding);
+}
+.benefits-bar *, .benefits-bar *::before { box-sizing: border-box; }
+.benefits-bar__inner { max-width: var(--benefits-width); margin-inline: auto; padding-inline: 20px; }
+.benefits-bar__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--benefits-spacing);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.benefits-bar__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: var(--item-alignment, var(--benefits-alignment));
+  gap: var(--item-gap, var(--benefits-icon-gap));
+  min-width: 0;
+  min-height: 40px;
+  padding: var(--item-padding, 6px) 12px;
+  color: var(--item-color, var(--benefits-color));
+}
+/* Leading dividers sit in the grid gap. The list clips them at each row's
+   leading edge, so wrapped rows have no stray outer divider. */
+.benefits-bar--dividers .benefits-bar__item + .benefits-bar__item::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc((var(--benefits-spacing) + var(--benefits-divider-width)) / -2);
+  top: 20%;
+  bottom: 20%;
+  width: var(--benefits-divider-width);
+  background: var(--benefits-divider-color);
+  pointer-events: none;
+}
+.benefits-bar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--item-icon-width, var(--item-icon-size, var(--benefits-icon-size)));
+  height: var(--item-icon-size, var(--benefits-icon-size));
+  color: var(--item-icon-color, var(--benefits-icon-color));
+}
+.benefits-bar__icon > :is(svg, img) { display: block; width: 100%; height: 100%; object-fit: contain; }
+.benefits-bar__text {
+  min-width: 0;
+  max-width: var(--item-text-width, 260px);
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--item-font-size, var(--benefits-font-size));
+  font-weight: var(--item-font-weight, var(--benefits-font-weight));
+  line-height: var(--item-line-height, var(--benefits-line-height));
+  text-align: var(--item-text-align, start);
+}
+.benefits-bar__icon--mobile { display: none; }
+.benefits-bar__list:focus-visible { outline: 2px solid var(--benefits-icon-color); outline-offset: 3px; }
+@media (min-width: 750px) {
+  .benefits-bar--mobile-only, .benefits-bar__item--mobile-only { display: none; }
+}
+@media (max-width: 749px) {
+  .benefits-bar { padding-block: var(--benefits-padding-mobile); }
+  .benefits-bar__inner { padding-inline: 16px; }
+  .benefits-bar__item {
+    padding-block: var(--item-padding-mobile, 12px);
+    gap: var(--item-gap, var(--benefits-icon-gap));
+  }
+  .benefits-bar__text { font-size: var(--item-font-size-mobile, var(--benefits-font-size-mobile)); }
+  .benefits-bar__icon {
+    width: var(--item-icon-width, var(--item-icon-size-mobile, var(--benefits-icon-size-mobile)));
+    height: var(--item-icon-size-mobile, var(--benefits-icon-size-mobile));
+  }
+  .benefits-bar__icon--has-mobile { display: none; }
+  .benefits-bar__icon--mobile { display: flex; }
+  .benefits-bar--stack .benefits-bar__list { grid-template-columns: minmax(0, 1fr); }
+  .benefits-bar--stack .benefits-bar__item::before { display: none; }
+  .benefits-bar--slide .benefits-bar__list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--benefits-divider-color) transparent;
+  }
+  .benefits-bar--slide .benefits-bar__item {
+    flex: 0 0 var(--benefits-slide-width);
+    scroll-snap-align: start;
+  }
+  .benefits-bar--slide .benefits-bar__item:only-child { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .benefits-bar--slide .benefits-bar__list { scroll-behavior: auto; }
+}

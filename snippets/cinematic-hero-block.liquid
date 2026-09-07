@@ -1,0 +1,64 @@
+{% doc %}
+  Renders a configured hero content block only when it has usable content.
+  @param {object} block - Hero section block.
+{% enddoc %}
+{% liquid
+  assign b = block.settings
+  assign show = false
+  if b.enabled
+    case block.type
+      when 'heading'
+        if b.heading != blank or b.accent != blank
+          assign show = true
+        endif
+      when 'button'
+        if b.label != blank and b.link != blank
+          assign show = true
+        endif
+      when 'eyebrow', 'text', 'trust', 'tagline'
+        if b.text != blank
+          assign show = true
+        endif
+    endcase
+  endif
+%}
+{% if show %}
+  <div
+    class="cinematic-hero__block cinematic-hero__position cinematic-hero__block--{{ block.type }}"
+    style="{% render 'cinematic-hero-position', settings: b %} --block-width: {{ b.max_width }}px; --block-align: {{ b.alignment }}; --block-color: {{ b.color }}; --font-desktop: {{ b.font_desktop }}px; --font-mobile: {{ b.font_mobile }}px; --space-top: {{ b.space_top }}px; --space-bottom: {{ b.space_bottom }}px; --space-top-mobile: {{ b.space_top_mobile }}px; --space-bottom-mobile: {{ b.space_bottom_mobile }}px; --duration: {{ b.duration }}ms; --delay: {{ b.delay }}ms;"
+    {{ block.shopify_attributes }}
+  >
+    <div class="cinematic-hero__reveal" {% if b.animate %}data-hero-animation="{{ b.animation }}"{% endif %}>
+      {% case block.type %}
+        {% when 'heading' %}
+          <{{ b.heading_tag }} class="cinematic-hero__heading" style="--accent-color: {{ b.accent_color }}; {% if b.accent_gradient != blank %}--accent-gradient: {{ b.accent_gradient }};{% endif %}">
+            {% if b.heading != blank %}<span>{{ b.heading }}</span>{% endif %}
+            {% if b.accent != blank %}<span class="cinematic-hero__accent">{{ b.accent }}</span>{% endif %}
+          </{{ b.heading_tag }}>
+        {% when 'eyebrow' %}
+          <p class="cinematic-hero__eyebrow">{{ b.text | escape }}</p>
+        {% when 'text' %}
+          <div class="cinematic-hero__text rte">{{ b.text }}</div>
+        {% when 'tagline' %}
+          <p class="cinematic-hero__tagline">{{ b.text | escape }}</p>
+        {% when 'trust' %}
+          <div class="cinematic-hero__trust">
+            {% if b.image != blank %}
+              {{ b.image | image_url: width: 80 | image_tag: class: 'cinematic-hero__trust-icon', width: 24, height: 24, alt: '', loading: 'lazy' }}
+            {% endif %}
+            {% if b.image == blank and b.icon != 'none' %}
+              {% render 'icon-or-image', icon: b.icon, width: 24, class_name: 'cinematic-hero__trust-icon' %}
+            {% endif %}
+            <span>{{ b.text | escape }}</span>
+          </div>
+        {% when 'button' %}
+          <a
+            class="cinematic-hero__button cinematic-hero__button--{{ b.button_style }} cinematic-hero__button--{{ b.hover_effect }}"
+            href="{{ b.link }}"
+            {% if b.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+            style="--button-bg: {{ b.background }}; --button-fg: {{ b.color }}; --button-border: {{ b.border_color }}; --button-border-width: {{ b.border_width }}px; --button-radius: {{ b.radius }}px; --button-py: {{ b.padding_y }}px; --button-px: {{ b.padding_x }}px; --button-width: {{ b.button_width }};"
+          >{{ b.label | escape }}</a>
+      {% endcase %}
+    </div>
+  </div>
+{% endif %}

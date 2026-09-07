@@ -1,0 +1,39 @@
+{% doc %}
+  Renders optional newsletter copy with independent typography controls.
+  @param {object} settings - Section settings.
+  @param {string} kind - eyebrow, heading, description, or privacy.
+{% enddoc %}
+{% liquid
+  assign content = settings[kind]
+  assign color_key = kind | append: '_color'
+  assign size_key = kind | append: '_size'
+  assign mobile_key = kind | append: '_size_mobile'
+  assign weight_key = kind | append: '_weight'
+  assign line_key = kind | append: '_line_height'
+  assign spacing_key = kind | append: '_letter_spacing'
+  assign alignment_key = kind | append: '_alignment'
+  assign width_key = kind | append: '_width'
+  assign margin_key = kind | append: '_spacing'
+  assign direction = 'up'
+  assign delay = 100
+  if kind == 'eyebrow'
+    assign direction = 'down'
+    assign delay = 0
+  endif
+  if kind == 'description'
+    assign direction = 'left'
+    assign delay = 200
+  endif
+  if kind == 'privacy'
+    assign delay = 600
+  endif
+%}
+{% if content != blank %}
+  <div class="newsletter-crew__copy newsletter-crew__copy--{{ kind }}" style="--copy-color: {{ settings[color_key] }}; --copy-size: {{ settings[size_key] }}px; --copy-mobile: {{ settings[mobile_key] }}px; --copy-weight: {{ settings[weight_key] }}; --copy-line: {{ settings[line_key] }}; --copy-tracking: {{ settings[spacing_key] }}em; --copy-align: {{ settings[alignment_key] }}; --copy-width: {{ settings[width_key] }}px; --copy-spacing: {{ settings[margin_key] }}px; --delay: {{ delay }}ms;" {% if settings.animate %}data-hero-animation="{{ direction }}"{% endif %}>
+    {% case kind %}
+      {% when 'eyebrow' %}<p style="text-transform: {{ settings.eyebrow_case }};">{{ content | escape }}</p>
+      {% when 'heading' %}<{{ settings.heading_level }} class="newsletter-crew__heading">{{ content }}</{{ settings.heading_level }}>
+      {% when 'description', 'privacy' %}<div class="rte">{{ content }}</div>
+    {% endcase %}
+  </div>
+{% endif %}

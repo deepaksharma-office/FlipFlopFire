@@ -1,0 +1,1325 @@
+{% liquid
+  assign s = section.settings
+  assign show_form = false
+  if s.show_form and s.button_label != blank
+    assign show_form = true
+  endif
+%}
+{% if s.eyebrow != blank or s.heading != blank or s.description != blank or show_form %}
+  {{ 'newsletter-crew.css' | asset_url | stylesheet_tag }}
+  {% if s.animate %}<script src="{{ 'cinematic-hero.js' | asset_url }}" defer></script>{% endif %}
+  <section {% if s.heading != blank %}aria-label="{{ s.heading | strip_html | escape }}"{% endif %}>
+    <cinematic-hero class="newsletter-crew{% if s.background_gradient %} newsletter-crew--gradient{% endif %}" data-animate="{{ s.animate }}" style="--newsletter-background: {{ s.background }}; --background-start: {{ s.background_start }}; --background-end: {{ s.background_end }}; --background-angle: {{ s.background_angle }}deg; --background-fit: {{ s.background_fit }}; --background-position: {{ s.background_position }}; --overlay-color: {{ s.overlay_color }}; --overlay-opacity: {{ s.overlay_opacity | divided_by: 100.0 }}; --content-width: {{ s.content_width }}px; --form-width: {{ s.form_width }}px; --field-gap: {{ s.field_gap }}px; --input-background: {{ s.input_background }}; --input-color: {{ s.input_color }}; --placeholder-color: {{ s.placeholder_color }}; --input-border: {{ s.input_border }}; --focus-color: {{ s.focus_color }}; --input-border-width: {{ s.input_border_width }}px; --input-radius: {{ s.input_radius }}px; --field-height: {{ s.field_height }}px; --field-height-mobile: {{ s.field_height_mobile }}px; --input-padding: {{ s.input_padding }}px; --input-padding-mobile: {{ s.input_padding_mobile }}px; --input-size: {{ s.input_size }}px; --input-size-mobile: {{ s.input_size_mobile }}px; --button-background: {{ s.button_background }}; --button-start: {{ s.button_start }}; --button-end: {{ s.button_end }}; --button-angle: {{ s.button_angle }}deg; --button-color: {{ s.button_color }}; --button-border: {{ s.button_border }}; --button-border-width: {{ s.button_border_width }}px; --button-radius: {{ s.button_radius }}px; --button-size: {{ s.button_size }}px; --button-size-mobile: {{ s.button_size_mobile }}px; --button-weight: {{ s.button_weight }}; --button-padding: {{ s.button_padding }}px; --button-width: {{ s.button_width }}; --message-color: {{ s.message_color }}; --error-color: {{ s.error_color }}; --border-top: {{ s.border_top }}px; --border-bottom: {{ s.border_bottom }}px; --border-color: {{ s.border_color }}; --duration: {{ s.duration }}ms; --padding-top: {{ s.padding_top_desktop }}px; --padding-bottom: {{ s.padding_bottom_desktop }}px; --padding-x: {{ s.padding_x_desktop }}px; --padding-top-tablet: {{ s.padding_top_tablet }}px; --padding-bottom-tablet: {{ s.padding_bottom_tablet }}px; --padding-x-tablet: {{ s.padding_x_tablet }}px; --padding-top-mobile: {{ s.padding_top_mobile }}px; --padding-bottom-mobile: {{ s.padding_bottom_mobile }}px; --padding-x-mobile: {{ s.padding_x_mobile }}px; --newsletter-color: {{ s.input_color }};">
+      {% if s.background_image != blank %}<div class="newsletter-crew__background" aria-hidden="true" {% if s.animate %}data-hero-animation="fade"{% endif %}>{{ s.background_image | image_url: width: 2400 | image_tag: widths: '750, 1100, 1440, 1920, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}</div>{% endif %}
+      {% if s.overlay %}<div class="newsletter-crew__overlay" aria-hidden="true"></div>{% endif %}
+      <div class="newsletter-crew__inner">
+        {% render 'newsletter-crew-copy', settings: s, kind: 'eyebrow' %}
+        {% render 'newsletter-crew-copy', settings: s, kind: 'heading' %}
+        {% render 'newsletter-crew-copy', settings: s, kind: 'description' %}
+        {% if show_form %}
+          {% render 'newsletter-crew-form', section: section %}
+          {% render 'newsletter-crew-copy', settings: s, kind: 'privacy' %}
+        {% endif %}
+      </div>
+    </cinematic-hero>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Newsletter / Email Signup",
+  "disabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "STAY CONNECTED"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "STAY OFF DUTY WITH US"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Heading level",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Get new drops, exclusive offers, crew stories and rewards updates delivered to your inbox.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "privacy",
+      "label": "Privacy text",
+      "default": "<p>We respect your privacy. No spam, ever. Unsubscribe anytime.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter form"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form",
+      "label": "Show signup form",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_first_name",
+      "label": "Show first name",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "first_name_required",
+      "label": "Require first name",
+      "default": false
+    },
+    {
+      "type": "paragraph",
+      "content": "Email is always visible and required for a valid Shopify newsletter signup. Clearing the button label hides the form."
+    },
+    {
+      "type": "select",
+      "id": "field_order",
+      "label": "Field order",
+      "options": [
+        {
+          "value": "name_first",
+          "label": "First name, then email"
+        },
+        {
+          "value": "email_first",
+          "label": "Email, then first name"
+        }
+      ],
+      "default": "name_first"
+    },
+    {
+      "type": "text",
+      "id": "first_name_label",
+      "label": "First-name accessible label",
+      "default": "First name"
+    },
+    {
+      "type": "text",
+      "id": "first_name_placeholder",
+      "label": "First-name placeholder",
+      "default": "First name (optional)"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email accessible label",
+      "default": "Email address"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text",
+      "default": "Join the Crew"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for joining the crew. You are now subscribed."
+    },
+    {
+      "type": "text",
+      "id": "error_message",
+      "label": "Error introduction",
+      "default": "Please check your details and try again."
+    },
+    {
+      "type": "color",
+      "id": "message_color",
+      "label": "Success message color",
+      "default": "#B9E5CA"
+    },
+    {
+      "type": "color",
+      "id": "error_color",
+      "label": "Error message color",
+      "default": "#FFB5B5"
+    },
+    {
+      "type": "range",
+      "id": "form_width",
+      "label": "Form maximum width",
+      "min": 500,
+      "max": 1200,
+      "step": 20,
+      "default": 940,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "field_gap",
+      "label": "Field gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Inputs"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#101016"
+    },
+    {
+      "type": "color",
+      "id": "input_color",
+      "label": "Input text",
+      "default": "#F4F4F6"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder text",
+      "default": "#BFC0CB"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input border",
+      "default": "#674432"
+    },
+    {
+      "type": "color",
+      "id": "focus_color",
+      "label": "Focus outline",
+      "default": "#FFB17E"
+    },
+    {
+      "type": "range",
+      "id": "input_border_width",
+      "label": "Border width",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "field_height",
+      "label": "Desktop minimum height",
+      "min": 48,
+      "max": 96,
+      "step": 2,
+      "default": 74,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "field_height_mobile",
+      "label": "Mobile minimum height",
+      "min": 44,
+      "max": 72,
+      "step": 2,
+      "default": 56,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding",
+      "label": "Desktop horizontal padding",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding_mobile",
+      "label": "Mobile horizontal padding",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_size",
+      "label": "Desktop font size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_size_mobile",
+      "label": "Mobile font size",
+      "min": 16,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Submit button"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_gradient",
+      "label": "Enable gradient",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Solid background",
+      "default": "#C4145C"
+    },
+    {
+      "type": "color",
+      "id": "button_start",
+      "label": "Gradient start",
+      "default": "#C4145C"
+    },
+    {
+      "type": "color",
+      "id": "button_end",
+      "label": "Gradient end",
+      "default": "#B74314"
+    },
+    {
+      "type": "range",
+      "id": "button_angle",
+      "label": "Gradient angle",
+      "min": 0,
+      "max": 360,
+      "step": 10,
+      "default": 100,
+      "unit": "deg"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Border color",
+      "default": "#C4145C"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Desktop font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_size_mobile",
+      "label": "Mobile font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "label": "Horizontal padding",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_width",
+      "label": "Desktop button width",
+      "options": [
+        {
+          "value": "100%",
+          "label": "Fill column"
+        },
+        {
+          "value": "auto",
+          "label": "Fit content"
+        }
+      ],
+      "default": "100%"
+    },
+    {
+      "type": "select",
+      "id": "button_hover",
+      "label": "Hover effect",
+      "options": [
+        {
+          "value": "brighten",
+          "label": "Brighten"
+        },
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "brighten"
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow typography"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Text color",
+      "default": "#FFB17E"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Desktop font size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size_mobile",
+      "label": "Mobile font size",
+      "min": 10,
+      "max": 54,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_line_height",
+      "label": "Line height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "1.1"
+        },
+        {
+          "value": "1.3",
+          "label": "1.3"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5"
+        },
+        {
+          "value": "1.6",
+          "label": "1.6"
+        },
+        {
+          "value": "1.8",
+          "label": "1.8"
+        }
+      ],
+      "default": "1.6"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        {
+          "value": "-0.02",
+          "label": "Tight"
+        },
+        {
+          "value": "0",
+          "label": "Normal"
+        },
+        {
+          "value": "0.12",
+          "label": "Wide"
+        }
+      ],
+      "default": "0.12"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_width",
+      "label": "Maximum width",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "default": 900,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_spacing",
+      "label": "Spacing below (above privacy)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Heading typography"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Desktop font size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "default": 56,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Mobile font size",
+      "min": 10,
+      "max": 54,
+      "step": 1,
+      "default": 34,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "Line height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "1.1"
+        },
+        {
+          "value": "1.3",
+          "label": "1.3"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5"
+        },
+        {
+          "value": "1.6",
+          "label": "1.6"
+        },
+        {
+          "value": "1.8",
+          "label": "1.8"
+        }
+      ],
+      "default": "1.1"
+    },
+    {
+      "type": "select",
+      "id": "heading_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        {
+          "value": "-0.02",
+          "label": "Tight"
+        },
+        {
+          "value": "0",
+          "label": "Normal"
+        },
+        {
+          "value": "0.12",
+          "label": "Wide"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_width",
+      "label": "Maximum width",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "default": 1000,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Spacing below (above privacy)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Description typography"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Text color",
+      "default": "#D0D1D9"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Desktop font size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "label": "Mobile font size",
+      "min": 10,
+      "max": 54,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "description_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "description_line_height",
+      "label": "Line height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "1.1"
+        },
+        {
+          "value": "1.3",
+          "label": "1.3"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5"
+        },
+        {
+          "value": "1.6",
+          "label": "1.6"
+        },
+        {
+          "value": "1.8",
+          "label": "1.8"
+        }
+      ],
+      "default": "1.6"
+    },
+    {
+      "type": "select",
+      "id": "description_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        {
+          "value": "-0.02",
+          "label": "Tight"
+        },
+        {
+          "value": "0",
+          "label": "Normal"
+        },
+        {
+          "value": "0.12",
+          "label": "Wide"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "type": "select",
+      "id": "description_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "description_width",
+      "label": "Maximum width",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "default": 860,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "description_spacing",
+      "label": "Spacing below (above privacy)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Privacy typography"
+    },
+    {
+      "type": "color",
+      "id": "privacy_color",
+      "label": "Text color",
+      "default": "#BFC0C9"
+    },
+    {
+      "type": "range",
+      "id": "privacy_size",
+      "label": "Desktop font size",
+      "min": 10,
+      "max": 80,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "privacy_size_mobile",
+      "label": "Mobile font size",
+      "min": 10,
+      "max": 54,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "privacy_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "privacy_line_height",
+      "label": "Line height",
+      "options": [
+        {
+          "value": "1.1",
+          "label": "1.1"
+        },
+        {
+          "value": "1.3",
+          "label": "1.3"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5"
+        },
+        {
+          "value": "1.6",
+          "label": "1.6"
+        },
+        {
+          "value": "1.8",
+          "label": "1.8"
+        }
+      ],
+      "default": "1.6"
+    },
+    {
+      "type": "select",
+      "id": "privacy_letter_spacing",
+      "label": "Letter spacing",
+      "options": [
+        {
+          "value": "-0.02",
+          "label": "Tight"
+        },
+        {
+          "value": "0",
+          "label": "Normal"
+        },
+        {
+          "value": "0.12",
+          "label": "Wide"
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "type": "select",
+      "id": "privacy_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "privacy_width",
+      "label": "Maximum width",
+      "min": 300,
+      "max": 1200,
+      "step": 20,
+      "default": 860,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "privacy_spacing",
+      "label": "Spacing below (above privacy)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_case",
+      "label": "Eyebrow text case",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "none",
+          "label": "Original"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#100D10"
+    },
+    {
+      "type": "checkbox",
+      "id": "background_gradient",
+      "label": "Enable background gradient",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_start",
+      "label": "Gradient start",
+      "default": "#1B1211"
+    },
+    {
+      "type": "color",
+      "id": "background_end",
+      "label": "Gradient end",
+      "default": "#090A10"
+    },
+    {
+      "type": "range",
+      "id": "background_angle",
+      "label": "Gradient angle",
+      "min": 0,
+      "max": 360,
+      "step": 10,
+      "default": 90,
+      "unit": "deg"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "background_fit",
+      "label": "Background image size",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "background_position",
+      "label": "Background image position",
+      "options": [
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "center top",
+          "label": "Top"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable image overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#100D10"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 70,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Container and borders"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content maximum width",
+      "min": 900,
+      "max": 1500,
+      "step": 20,
+      "default": 1100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_top",
+      "label": "Top border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_bottom",
+      "label": "Bottom border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Section border color",
+      "default": "#30201D"
+    },
+    {
+      "type": "header",
+      "content": "Desktop spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_desktop",
+      "label": "Side padding",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Tablet spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_tablet",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_tablet",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_tablet",
+      "label": "Side padding",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Mobile spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_x_mobile",
+      "label": "Side padding",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Enable entrance animations",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "duration",
+      "label": "Animation duration",
+      "min": 500,
+      "max": 900,
+      "step": 50,
+      "default": 700,
+      "unit": "ms"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter / Email Signup"
+    }
+  ]
+}
+{% endschema %}

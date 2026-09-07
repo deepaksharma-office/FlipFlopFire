@@ -1,0 +1,163 @@
+{% liquid
+  assign desktop_arrows = false
+  assign mobile_arrows = false
+  if section.settings.navigation == 'desktop' or section.settings.navigation == 'both'
+    assign desktop_arrows = true
+  endif
+  if section.settings.navigation == 'mobile' or section.settings.navigation == 'both'
+    assign mobile_arrows = true
+  endif
+%}
+
+{% if section.blocks.size > 0 %}
+  <div
+    class="icon-text-bar"
+    style="--bar-background: {{ section.settings.background_color }}; --bar-color: {{ section.settings.text_color }}; --bar-icon-size: {{ section.settings.icon_size }}px; --bar-font-size: {{ section.settings.font_size }}px; --bar-padding: {{ section.settings.padding }}px; --bar-columns: {{ section.settings.slides_desktop }}; --bar-mobile-columns: {{ section.settings.slides_mobile }};"
+  >
+    <div
+      class="splide icon-text-bar__slider icon-text-bar__slider--nav-{{ section.settings.navigation }}"
+      data-theme-slider
+      data-splide='{"type":"slide","rewind":true,"perPage":{{ section.settings.slides_desktop | plus: 0 }},"perMove":1,"gap":"24px","arrows":{{ desktop_arrows }},"pagination":false,"autoplay":{{ section.settings.autoplay | json }},"interval":{{ section.settings.autoplay_speed | times: 1000 }},"pauseOnHover":true,"pauseOnFocus":true,"mediaQuery":"max","breakpoints":{"749":{"perPage":{{ section.settings.slides_mobile | plus: 0 }},"arrows":{{ mobile_arrows }},"gap":"16px"}}}'
+      aria-label="{{ section.settings.accessibility_label | escape }}"
+    >
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% for block in section.blocks %}
+            <li class="splide__slide icon-text-bar__item" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 96 | image_tag: class: 'icon-text-bar__icon', widths: '24, 48, 72, 96', sizes: '48px', alt: '' }}
+              {% elsif block.settings.icon == 'shield' %}
+                <svg class="icon-text-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false">
+                  <path d="M12 3 4.5 6v6c0 4.5 4.5 7.5 7.5 9 3-1.5 7.5-4.5 7.5-9V6L12 3Z" />
+                </svg>
+              {% elsif block.settings.icon != 'none' %}
+                {% render 'icon-or-image', icon: block.settings.icon, width: section.settings.icon_size, class_name: 'icon-text-bar__icon' %}
+              {% endif %}
+              <span>{{ block.settings.label | escape }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .icon-text-bar {
+    background: var(--bar-background);
+    color: var(--bar-color);
+    padding: var(--bar-padding) 20px;
+    font-size: var(--bar-font-size);
+    line-height: 1.4;
+  }
+  .icon-text-bar__slider {
+    max-width: 1100px;
+    margin-inline: auto;
+    visibility: visible;
+  }
+  .icon-text-bar__slider--nav-desktop.is-initialized,
+  .icon-text-bar__slider--nav-both.is-initialized { padding-inline: 30px; }
+  .icon-text-bar__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .icon-text-bar__icon {
+    width: var(--bar-icon-size);
+    height: var(--bar-icon-size);
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .icon-text-bar__slider:not(.is-initialized) .splide__list {
+    display: flex;
+    gap: 24px;
+  }
+  .icon-text-bar__slider:not(.is-initialized) .splide__track { overflow-x: auto; }
+  .icon-text-bar__slider:not(.is-initialized) .splide__slide {
+    flex: 0 0 calc((100% - (var(--bar-columns) - 1) * 24px) / var(--bar-columns));
+  }
+  .icon-text-bar .splide__arrow { background: transparent; color: inherit; width: 24px; height: 24px; opacity: 1; }
+  .icon-text-bar .splide__arrow svg { fill: currentColor; width: 12px; height: 12px; }
+  .icon-text-bar .splide__arrow--prev { left: 0; }
+  .icon-text-bar .splide__arrow--next { right: 0; }
+  .icon-text-bar .splide__arrow:disabled { opacity: 0.3; }
+  .icon-text-bar .splide:not(.is-overflow) .splide__arrows { display: none; }
+  @media screen and (max-width: 749px) {
+    .icon-text-bar { padding-inline: 12px; }
+    .icon-text-bar__slider--nav-desktop.is-initialized { padding-inline: 0; }
+    .icon-text-bar__slider--nav-mobile.is-initialized,
+    .icon-text-bar__slider--nav-both.is-initialized { padding-inline: 30px; }
+    .icon-text-bar__slider:not(.is-initialized) .splide__list { gap: 16px; }
+    .icon-text-bar__slider:not(.is-initialized) .splide__slide {
+      flex-basis: calc((100% - (var(--bar-mobile-columns) - 1) * 16px) / var(--bar-mobile-columns));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Icon with text bar",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "Enable autoplay", "default": false },
+    { "type": "range", "id": "autoplay_speed", "label": "Autoplay speed", "info": "Time between slides.", "min": 2, "max": 10, "step": 1, "unit": "sec", "default": 5, "visible_if": "{{ section.settings.autoplay }}" },
+    { "type": "select", "id": "slides_desktop", "label": "Slides per view on desktop", "default": "3", "options": [
+      { "value": "1", "label": "1" },
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" },
+      { "value": "4", "label": "4" },
+      { "value": "5", "label": "5" },
+      { "value": "6", "label": "6" }
+    ] },
+    { "type": "select", "id": "slides_mobile", "label": "Slides per view on mobile", "default": "1", "options": [
+      { "value": "1", "label": "1" },
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" }
+    ] },
+    { "type": "select", "id": "navigation", "label": "Show navigation buttons on", "default": "both", "options": [
+      { "value": "desktop", "label": "Desktop" },
+      { "value": "mobile", "label": "Mobile" },
+      { "value": "both", "label": "Both" }
+    ] },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FF1675" },
+    { "type": "color", "id": "text_color", "label": "Text and icons", "default": "#FFFFFF" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 12, "max": 48, "step": 2, "unit": "px", "default": 20 },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 10, "max": 24, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding", "label": "Vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 10 },
+    { "type": "text", "id": "accessibility_label", "label": "Accessibility label", "default": "Store benefits" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Icon and text",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "shield", "options": [
+          { "value": "none", "label": "None" },
+          { "value": "shield", "label": "Shield" },
+          { "value": "truck", "label": "Truck" },
+          { "value": "heart", "label": "Heart" },
+          { "value": "fire", "label": "Fire" },
+          { "value": "star", "label": "Star" },
+          { "value": "box", "label": "Box" },
+          { "value": "return", "label": "Return" },
+          { "value": "check_box", "label": "Check box" },
+          { "value": "lock", "label": "Lock" }
+        ] },
+        { "type": "image_picker", "id": "image", "label": "Custom icon image", "info": "Replaces the selected icon." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Store benefit" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Icon with text bar", "blocks": [
+      { "type": "item", "settings": { "icon": "shield", "label": "Firefighter Owned & Operated" } },
+      { "type": "item", "settings": { "icon": "truck", "label": "Free Shipping on Orders Over $75" } },
+      { "type": "item", "settings": { "icon": "heart", "label": "Supporting Our Firefighter Family" } }
+    ] }
+  ]
+}
+{% endschema %}

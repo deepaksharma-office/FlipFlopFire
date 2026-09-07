@@ -1,0 +1,33 @@
+{% doc %}
+  Renders a nonempty, independently styled story block.
+  @param {object} block - Section content block.
+{% enddoc %}
+{% liquid
+  assign b = block.settings
+  assign show = false
+  if b.enabled
+    if block.type == 'button' and b.label != blank and b.link != blank
+      assign show = true
+    endif
+    if block.type != 'button' and b.text != blank
+      assign show = true
+    endif
+  endif
+%}
+{% if show %}
+  <div class="brand-story__block brand-story__position" {{ block.shopify_attributes }}
+    style="{% render 'cinematic-hero-position', settings: b %} --block-width: {{ b.max_width }}px; --block-align: {{ b.alignment }}; --block-color: {{ b.color }}; --font-desktop: {{ b.font_size }}px; --font-mobile: {{ b.font_mobile }}px; --font-weight: {{ b.weight }}; --letter-spacing: {{ b.letter_spacing }}em; --line-height: {{ b.line_height }}; --text-case: {{ b.text_case }}; --space-top: {{ b.space_top }}px; --space-bottom: {{ b.space_bottom }}px; --space-mobile: {{ b.space_mobile }}px; --delay: {{ b.delay }}ms;">
+    <div {% if b.animate %}data-hero-animation="{{ b.animation }}"{% endif %}>
+      {% case block.type %}
+        {% when 'eyebrow' %}<p class="brand-story__eyebrow">{{ b.text | escape }}</p>
+        {% when 'heading' %}<{{ b.heading_level }} class="brand-story__heading">{{ b.text }}</{{ b.heading_level }}>
+        {% when 'text' %}<div class="brand-story__text rte">{{ b.text }}</div>
+        {% when 'button' %}
+          <a class="brand-story__button brand-story__button--{{ b.style }} brand-story__button--{{ b.hover }}" href="{{ b.link }}" {% if b.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+            style="--button-background: {{ b.background }}; --gradient-start: {{ b.gradient_start }}; --gradient-end: {{ b.gradient_end }}; --button-border: {{ b.border_color }}; --button-border-width: {{ b.border_width }}px; --button-radius: {{ b.radius }}px; --button-px: {{ b.padding_x }}px; --button-py: {{ b.padding_y }}px; --button-width: {{ b.width }};">
+            {{ b.label | escape }}
+          </a>
+      {% endcase %}
+    </div>
+  </div>
+{% endif %}

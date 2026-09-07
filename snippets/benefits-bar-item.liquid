@@ -1,0 +1,55 @@
+{% doc %}
+  Renders one nonempty benefit using the existing theme icon system.
+  @param {object} block - Benefit block.
+{% enddoc %}
+{% liquid
+  assign b = block.settings
+  assign desktop_image = ''
+  assign theme_icon = b.icon
+  if b.icon_source == 'image' and b.image != blank
+    assign desktop_image = b.image
+  endif
+  if theme_icon == 'none' or theme_icon == blank
+    assign desktop_image = b.image
+  endif
+  assign has_desktop_icon = false
+  if desktop_image != blank or theme_icon != blank and theme_icon != 'none'
+    assign has_desktop_icon = true
+  endif
+  assign mobile_image = ''
+  if b.mobile_custom and b.image_mobile != blank
+    assign mobile_image = b.image_mobile
+  endif
+  assign icon_label = b.icon_label
+  if icon_label == blank and b.text == blank
+    assign icon_label = desktop_image.alt | default: mobile_image.alt
+    if icon_label == blank and theme_icon != 'none'
+      assign icon_label = theme_icon | replace: '_', ' ' | capitalize
+    endif
+  endif
+%}
+{% if b.text != blank or has_desktop_icon or mobile_image != blank %}
+  <li
+    class="benefits-bar__item{% if b.text == blank and has_desktop_icon == false %} benefits-bar__item--mobile-only{% endif %}"
+    {% if b.text == blank and icon_label != blank %}aria-label="{{ icon_label | escape }}"{% endif %}
+    style="{% if b.icon_color != blank %}--item-icon-color: {{ b.icon_color }};{% endif %}{% if b.text_color != blank %}--item-color: {{ b.text_color }};{% endif %}{% if b.icon_size > 0 %}--item-icon-size: {{ b.icon_size }}px;{% endif %}{% if b.icon_size_mobile > 0 %}--item-icon-size-mobile: {{ b.icon_size_mobile }}px;{% endif %}{% if b.icon_width > 0 %}--item-icon-width: {{ b.icon_width }}px;{% endif %}{% if b.icon_gap >= 0 %}--item-gap: {{ b.icon_gap }}px;{% endif %}{% if b.font_size > 0 %}--item-font-size: {{ b.font_size }}px;{% endif %}{% if b.font_size_mobile > 0 %}--item-font-size-mobile: {{ b.font_size_mobile }}px;{% endif %}{% if b.font_weight != 'inherit' %}--item-font-weight: {{ b.font_weight }};{% endif %}{% if b.line_height != 'inherit' %}--item-line-height: {{ b.line_height }};{% endif %}{% if b.alignment != 'inherit' %}--item-alignment: {{ b.alignment }};{% endif %}--item-text-align: {{ b.text_alignment }}; --item-text-width: {{ b.text_width }}px; --item-padding: {{ b.padding }}px; --item-padding-mobile: {{ b.padding_mobile }}px;"
+    {{ block.shopify_attributes }}
+  >
+    {% if has_desktop_icon %}
+      <span class="benefits-bar__icon{% if mobile_image != blank %} benefits-bar__icon--has-mobile{% endif %}" aria-hidden="true">
+        {% if desktop_image != blank %}
+          {{ desktop_image | image_url: width: 160 | image_tag: widths: '32, 64, 96, 160', sizes: '80px', alt: '', loading: 'lazy' }}
+        {% endif %}
+        {% if desktop_image == blank and theme_icon != blank and theme_icon != 'none' %}
+          {% render 'icon-or-image', icon: theme_icon, width: 24, class_name: 'benefits-bar__theme-icon' %}
+        {% endif %}
+      </span>
+    {% endif %}
+    {% if mobile_image != blank %}
+      <span class="benefits-bar__icon benefits-bar__icon--mobile" aria-hidden="true">
+        {{ mobile_image | image_url: width: 160 | image_tag: widths: '32, 64, 96, 160', sizes: '80px', alt: '', loading: 'lazy' }}
+      </span>
+    {% endif %}
+    {% if b.text != blank %}<p class="benefits-bar__text">{{ b.text | escape }}</p>{% endif %}
+  </li>
+{% endif %}
