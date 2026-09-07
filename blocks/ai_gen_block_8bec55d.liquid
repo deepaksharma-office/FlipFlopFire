@@ -1,0 +1,917 @@
+{% doc %}
+  @prompt
+    Create a new custom Shopify section named “Loyalty Rewards Steps” and match the attached reference design as closely as possible.
+    
+    SECTION DESIGN
+    - Full-width section with a very dark black-purple gradient background:
+      radial-gradient(circle at center, #1B1115 0%, #0D0B13 70%, #090810 100%)
+    - Add a thin vertical orange-red accent line along the far-left edge.
+    - Use a centered content container with a maximum width of 1400px.
+    - Desktop section height should be approximately 530px.
+    - Use generous top and bottom spacing while preserving the compact appearance shown in the reference.
+    
+    HEADER CONTENT
+    - Small uppercase eyebrow: “LOYALTY PROGRAM”
+    - Use a condensed font, gold color #D5A536, wide letter spacing and approximately 11px font size.
+    - Main heading on two lines:
+      “GET REWARDED FOR”
+      “LIVING OFF DUTY”
+    - First line should be white.
+    - Second line should use a left-to-right gradient from hot pink #FF246D through coral #FF543D to orange #FFA12D.
+    - Heading should use a tall, narrow, condensed uppercase font similar to Bebas Neue or Oswald Condensed.
+    - Desktop heading size: approximately 40–44px.
+    - Supporting text:
+      “Earn points when you shop, refer friends and support the Flip Flop Firefighter community.”
+    - Keep the supporting text centered, muted light grey and restricted to approximately 420px width.
+    
+    STEPS LAYOUT
+    Create three equal cards in one horizontal row:
+    
+    1. Number: 01
+       Icon: simple outlined user icon
+       Title: CREATE AN ACCOUNT
+       Description: Sign up free and join the community instantly.
+       Accent color: coral orange #F05B37
+    
+    2. Number: 02
+       Icon: simple outlined lightning bolt
+       Title: EARN POINTS
+       Description: Every purchase, review and referral earns you points.
+       Accent color: hot pink #F50068
+    
+    3. Number: 03
+       Icon: simple outlined gift box
+       Title: REDEEM REWARDS
+       Description: Use points for discounts, exclusive gear and more.
+       Accent color: gold #DEA937
+    
+    CARD DESIGN
+    - Cards should be approximately 31–32% width and equal height.
+    - Background: #111016 or an almost-black purple.
+    - Border: 1px solid rgba(255, 95, 45, 0.20).
+    - Border radius: 12px.
+    - Approximately 145–150px tall on desktop.
+    - Each circular step-number badge must overlap the top border and be horizontally centered.
+    - Badge size: approximately 32px.
+    - Badge text should be small, condensed and white.
+    - Match each badge background to its card accent color.
+    - Add the outlined icon below the badge with adequate top spacing.
+    - Icons should be around 20px and inherit the card accent color.
+    - Titles should be white, uppercase, condensed and approximately 15–16px.
+    - Descriptions should be muted grey #B8B5C0, approximately 12–13px, with a comfortable line height.
+    - Keep all content centered.
+    - Do not add card shadows or decorative graphics.
+    
+    BUTTONS
+    Add two centered buttons below the cards:
+    
+    Primary button:
+    - Label: “Join Rewards”
+    - Shopify button link setting.
+    - Gradient background from #FF276B to #FF5B38.
+    - White text.
+    - Approximately 140px wide and 42px high.
+    - 9px border radius.
+    
+    Secondary button:
+    - Label: “Member Login”
+    - Shopify button link setting.
+    - Transparent dark background.
+    - Cyan border and text #00DCEB.
+    - Approximately 134px wide and 42px high.
+    - 9px border radius.
+    
+    Keep approximately 12px between the buttons. Add subtle hover states:
+    - Primary button becomes slightly brighter and moves up 1px.
+    - Secondary button fills with a low-opacity cyan background.
+    
+    SHOPIFY SECTION SETTINGS
+    Provide editable settings for:
+    - Eyebrow text
+    - Both heading lines
+    - Heading gradient colors
+    - Description
+    - Background colors
+    - Left accent-line color
+    - Three repeatable step blocks
+    - Step number
+    - Icon selector: user, lightning and gift
+    - Step title
+    - Step description
+    - Step accent color
+    - Primary button label and link
+    - Secondary button label and link
+    - Desktop and mobile section spacing
+    - Option to show or hide the left accent line
+    
+    RESPONSIVE BEHAVIOUR
+    - Desktop: three cards in one row.
+    - Tablet: three cards may remain in one row with reduced gaps and typography.
+    - Mobile: stack cards vertically with 16px gaps.
+    - Mobile section height should be automatic.
+    - Use approximately 20px horizontal padding.
+    - Keep the heading centered and reduce it to 32–36px.
+    - Stack the two buttons vertically at full width on small mobile screens.
+    - Preserve the overlapping numbered badges.
+    - Prevent all text, buttons and badges from clipping.
+    
+    TECHNICAL REQUIREMENTS
+    - Build this as a standalone Shopify Online Store 2.0 Liquid section compatible with the Horizon theme.
+    - Use semantic HTML, scoped CSS and lightweight vanilla JavaScript only if required.
+    - Do not use external libraries, app dependencies or hardcoded URLs.
+    - Use inline SVG icons so their stroke colors can follow the block accent colors.
+    - Avoid overriding Horizon’s global styles.
+    - Ensure the schema is valid and the section is fully editable in the Theme Editor.
+    - Make all button and text colors accessible.
+    - Match the spacing, proportions, borders, typography hierarchy and alignment of the 
+{% enddoc %}
+{% liquid
+  assign section_id = section.id | replace: '_', '' | downcase
+%}
+
+{% style %}
+  .loyalty-rewards-{{ section_id }} {
+    position: relative;
+    background: radial-gradient(circle at center, {{ section.settings.bg_color_center }} 0%, {{ section.settings.bg_color_mid }} 70%, {{ section.settings.bg_color_outer }} 100%);
+    min-height: 530px;
+    display: flex;
+    align-items: center;
+    padding: {{ section.settings.spacing_top_desktop }}px 20px {{ section.settings.spacing_bottom_desktop }}px;
+    overflow: hidden;
+  }
+
+  {% if section.settings.show_accent_line %}
+    .loyalty-rewards-{{ section_id }}::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: {{ section.settings.accent_line_color }};
+    }
+  {% endif %}
+
+  .loyalty-rewards-container-{{ section_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .loyalty-rewards-header-{{ section_id }} {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .loyalty-rewards-eyebrow-{{ section_id }} {
+    font-family: {{ section.settings.type_heading_font.family }}, {{ section.settings.type_heading_font.fallback_families }};
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: {{ section.settings.eyebrow_color }};
+    margin-bottom: 16px;
+  }
+
+  .loyalty-rewards-heading-{{ section_id }} {
+    font-family: {{ section.settings.type_heading_font.family }}, {{ section.settings.type_heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+
+  .loyalty-rewards-heading-line1-{{ section_id }} {
+    display: block;
+    color: {{ section.settings.heading_line1_color }};
+  }
+
+  .loyalty-rewards-heading-line2-{{ section_id }} {
+    display: block;
+    background: linear-gradient(90deg, {{ section.settings.gradient_color_1 }} 0%, {{ section.settings.gradient_color_2 }} 50%, {{ section.settings.gradient_color_3 }} 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .loyalty-rewards-description-{{ section_id }} {
+    font-family: {{ section.settings.type_body_font.family }}, {{ section.settings.type_body_font.fallback_families }};
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    color: {{ section.settings.description_color }};
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .loyalty-rewards-steps-{{ section_id }} {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .loyalty-rewards-card-{{ section_id }} {
+    flex: 1;
+    background: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: 12px;
+    padding: 48px 24px 24px;
+    text-align: center;
+    position: relative;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loyalty-rewards-badge-{{ section_id }} {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: {{ section.settings.type_heading_font.family }}, {{ section.settings.type_heading_font.fallback_families }};
+    font-weight: 600;
+    font-size: 11px;
+    color: #ffffff;
+  }
+
+  .loyalty-rewards-icon-{{ section_id }} {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 16px;
+  }
+
+  .loyalty-rewards-card-title-{{ section_id }} {
+    font-family: {{ section.settings.type_heading_font.family }}, {{ section.settings.type_heading_font.fallback_families }};
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 12px;
+  }
+
+  .loyalty-rewards-card-description-{{ section_id }} {
+    font-family: {{ section.settings.type_body_font.family }}, {{ section.settings.type_body_font.fallback_families }};
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.5;
+    color: {{ section.settings.card_text_color }};
+    margin: 0;
+  }
+
+  .loyalty-rewards-buttons-{{ section_id }} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .loyalty-rewards-btn-primary-{{ section_id }} {
+    display: inline-block;
+    padding: 0 28px;
+    height: 42px;
+    line-height: 42px;
+    background: linear-gradient(90deg, {{ section.settings.primary_btn_gradient_1 }} 0%, {{ section.settings.primary_btn_gradient_2 }} 100%);
+    color: {{ section.settings.primary_btn_text_color }};
+    border-radius: 9px;
+    font-family: {{ section.settings.type_body_font.family }}, {{ section.settings.type_body_font.fallback_families }};
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .loyalty-rewards-btn-primary-{{ section_id }}:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+  }
+
+  .loyalty-rewards-btn-secondary-{{ section_id }} {
+    display: inline-block;
+    padding: 0 26px;
+    height: 42px;
+    line-height: 40px;
+    background: {{ section.settings.secondary_btn_bg_color }};
+    color: {{ section.settings.secondary_btn_text_color }};
+    border: 1px solid {{ section.settings.secondary_btn_border_color }};
+    border-radius: 9px;
+    font-family: {{ section.settings.type_body_font.family }}, {{ section.settings.type_body_font.fallback_families }};
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .loyalty-rewards-btn-secondary-{{ section_id }}:hover {
+    background-color: {{ section.settings.secondary_btn_hover_bg }};
+  }
+
+  @media screen and (max-width: 989px) {
+    .loyalty-rewards-{{ section_id }} {
+      min-height: auto;
+      padding: {{ section.settings.spacing_top_mobile }}px 20px {{ section.settings.spacing_bottom_mobile }}px;
+    }
+
+    .loyalty-rewards-heading-{{ section_id }} {
+      font-size: 36px;
+    }
+
+    .loyalty-rewards-steps-{{ section_id }} {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .loyalty-rewards-card-{{ section_id }} {
+      padding: 52px 20px 28px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .loyalty-rewards-heading-{{ section_id }} {
+      font-size: 32px;
+    }
+
+    .loyalty-rewards-buttons-{{ section_id }} {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .loyalty-rewards-btn-primary-{{ section_id }},
+    .loyalty-rewards-btn-secondary-{{ section_id }} {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  {{ section.settings.type_body_font | font_face: font_display: 'swap' }}
+  {{ section.settings.type_heading_font | font_face: font_display: 'swap' }}
+{% endstyle %}
+
+<div class="loyalty-rewards-{{ section_id }}">
+  <div class="loyalty-rewards-container-{{ section_id }}">
+    <div class="loyalty-rewards-header-{{ section_id }}">
+      {% if section.settings.eyebrow_text != blank %}
+        <div class="loyalty-rewards-eyebrow-{{ section_id }}">
+          {{ section.settings.eyebrow_text }}
+        </div>
+      {% endif %}
+      
+      <h2 class="loyalty-rewards-heading-{{ section_id }}">
+        <span class="loyalty-rewards-heading-line1-{{ section_id }}">{{ section.settings.heading_line1 }}</span>
+        <span class="loyalty-rewards-heading-line2-{{ section_id }}">{{ section.settings.heading_line2 }}</span>
+      </h2>
+
+      {% if section.settings.description != blank %}
+        <p class="loyalty-rewards-description-{{ section_id }}">
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="loyalty-rewards-steps-{{ section_id }}">
+      <div class="loyalty-rewards-card-{{ section_id }}">
+        <div 
+          class="loyalty-rewards-badge-{{ section_id }}"
+          style="background-color: {{ section.settings.step1_accent_color }};"
+        >
+          {{ section.settings.step1_number }}
+        </div>
+
+        <div class="loyalty-rewards-icon-{{ section_id }}" style="color: {{ section.settings.step1_accent_color }};">
+          {% case section.settings.step1_icon %}
+            {% when 'user' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            {% when 'lightning' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            {% when 'gift' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                <rect x="2" y="7" width="20" height="5"></rect>
+                <line x1="12" y1="22" x2="12" y2="7"></line>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+              </svg>
+          {% endcase %}
+        </div>
+
+        <h3 class="loyalty-rewards-card-title-{{ section_id }}">
+          {{ section.settings.step1_title }}
+        </h3>
+
+        <p class="loyalty-rewards-card-description-{{ section_id }}">
+          {{ section.settings.step1_description }}
+        </p>
+      </div>
+
+      <div class="loyalty-rewards-card-{{ section_id }}">
+        <div 
+          class="loyalty-rewards-badge-{{ section_id }}"
+          style="background-color: {{ section.settings.step2_accent_color }};"
+        >
+          {{ section.settings.step2_number }}
+        </div>
+
+        <div class="loyalty-rewards-icon-{{ section_id }}" style="color: {{ section.settings.step2_accent_color }};">
+          {% case section.settings.step2_icon %}
+            {% when 'user' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            {% when 'lightning' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            {% when 'gift' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                <rect x="2" y="7" width="20" height="5"></rect>
+                <line x1="12" y1="22" x2="12" y2="7"></line>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+              </svg>
+          {% endcase %}
+        </div>
+
+        <h3 class="loyalty-rewards-card-title-{{ section_id }}">
+          {{ section.settings.step2_title }}
+        </h3>
+
+        <p class="loyalty-rewards-card-description-{{ section_id }}">
+          {{ section.settings.step2_description }}
+        </p>
+      </div>
+
+      <div class="loyalty-rewards-card-{{ section_id }}">
+        <div 
+          class="loyalty-rewards-badge-{{ section_id }}"
+          style="background-color: {{ section.settings.step3_accent_color }};"
+        >
+          {{ section.settings.step3_number }}
+        </div>
+
+        <div class="loyalty-rewards-icon-{{ section_id }}" style="color: {{ section.settings.step3_accent_color }};">
+          {% case section.settings.step3_icon %}
+            {% when 'user' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            {% when 'lightning' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            {% when 'gift' %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                <rect x="2" y="7" width="20" height="5"></rect>
+                <line x1="12" y1="22" x2="12" y2="7"></line>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+              </svg>
+          {% endcase %}
+        </div>
+
+        <h3 class="loyalty-rewards-card-title-{{ section_id }}">
+          {{ section.settings.step3_title }}
+        </h3>
+
+        <p class="loyalty-rewards-card-description-{{ section_id }}">
+          {{ section.settings.step3_description }}
+        </p>
+      </div>
+    </div>
+
+    <div class="loyalty-rewards-buttons-{{ section_id }}">
+      {% if section.settings.primary_btn_link != blank %}
+        <a href="{{ section.settings.primary_btn_link }}" class="loyalty-rewards-btn-primary-{{ section_id }}">
+          {{ section.settings.primary_btn_text }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.secondary_btn_link != blank %}
+        <a href="{{ section.settings.secondary_btn_link }}" class="loyalty-rewards-btn-secondary-{{ section_id }}">
+          {{ section.settings.secondary_btn_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Loyalty rewards steps",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "LOYALTY PROGRAM"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#D5A536"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading line 1",
+      "default": "GET REWARDED FOR"
+    },
+    {
+      "type": "color",
+      "id": "heading_line1_color",
+      "label": "Line 1 color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading line 2",
+      "default": "LIVING OFF DUTY"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Line 2 gradient start",
+      "default": "#FF246D"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Line 2 gradient middle",
+      "default": "#FF543D"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_3",
+      "label": "Line 2 gradient end",
+      "default": "#FFA12D"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description text",
+      "default": "Earn points when you shop, refer friends and support the Flip Flop Firefighter community."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#B8B5C0"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_center",
+      "label": "Center color",
+      "default": "#1B1115"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_mid",
+      "label": "Mid color",
+      "default": "#0D0B13"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_outer",
+      "label": "Outer color",
+      "default": "#090810"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_accent_line",
+      "label": "Show left accent line",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_line_color",
+      "label": "Accent line color",
+      "default": "#FF5B38"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background",
+      "default": "#111016"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "rgba(255, 95, 45, 0.20)"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card description color",
+      "default": "#B8B5C0"
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "text",
+      "id": "step1_number",
+      "label": "Number",
+      "default": "01"
+    },
+    {
+      "type": "select",
+      "id": "step1_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "user",
+          "label": "User"
+        },
+        {
+          "value": "lightning",
+          "label": "Lightning"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "user"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Title",
+      "default": "CREATE AN ACCOUNT"
+    },
+    {
+      "type": "textarea",
+      "id": "step1_description",
+      "label": "Description",
+      "default": "Sign up free and join the community instantly."
+    },
+    {
+      "type": "color",
+      "id": "step1_accent_color",
+      "label": "Accent color",
+      "default": "#F05B37"
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "text",
+      "id": "step2_number",
+      "label": "Number",
+      "default": "02"
+    },
+    {
+      "type": "select",
+      "id": "step2_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "user",
+          "label": "User"
+        },
+        {
+          "value": "lightning",
+          "label": "Lightning"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "lightning"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Title",
+      "default": "EARN POINTS"
+    },
+    {
+      "type": "textarea",
+      "id": "step2_description",
+      "label": "Description",
+      "default": "Every purchase, review and referral earns you points."
+    },
+    {
+      "type": "color",
+      "id": "step2_accent_color",
+      "label": "Accent color",
+      "default": "#F50068"
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "text",
+      "id": "step3_number",
+      "label": "Number",
+      "default": "03"
+    },
+    {
+      "type": "select",
+      "id": "step3_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "user",
+          "label": "User"
+        },
+        {
+          "value": "lightning",
+          "label": "Lightning"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "gift"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Title",
+      "default": "REDEEM REWARDS"
+    },
+    {
+      "type": "textarea",
+      "id": "step3_description",
+      "label": "Description",
+      "default": "Use points for discounts, exclusive gear and more."
+    },
+    {
+      "type": "color",
+      "id": "step3_accent_color",
+      "label": "Accent color",
+      "default": "#DEA937"
+    },
+    {
+      "type": "header",
+      "content": "Primary button"
+    },
+    {
+      "type": "text",
+      "id": "primary_btn_text",
+      "label": "Label",
+      "default": "Join Rewards"
+    },
+    {
+      "type": "url",
+      "id": "primary_btn_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_gradient_1",
+      "label": "Gradient start",
+      "default": "#FF276B"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_gradient_2",
+      "label": "Gradient end",
+      "default": "#FF5B38"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Secondary button"
+    },
+    {
+      "type": "text",
+      "id": "secondary_btn_text",
+      "label": "Label",
+      "default": "Member Login"
+    },
+    {
+      "type": "url",
+      "id": "secondary_btn_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "secondary_btn_bg_color",
+      "label": "Background",
+      "default": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "type": "color",
+      "id": "secondary_btn_text_color",
+      "label": "Text color",
+      "default": "#00DCEB"
+    },
+    {
+      "type": "color",
+      "id": "secondary_btn_border_color",
+      "label": "Border color",
+      "default": "#00DCEB"
+    },
+    {
+      "type": "color",
+      "id": "secondary_btn_hover_bg",
+      "label": "Hover background",
+      "default": "rgba(0, 220, 235, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_desktop",
+      "label": "Desktop top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_desktop",
+      "label": "Desktop bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "spacing_top_mobile",
+      "label": "Mobile top",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom_mobile",
+      "label": "Mobile bottom",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loyalty rewards steps"
+    }
+  ]
+}
+{% endschema %}

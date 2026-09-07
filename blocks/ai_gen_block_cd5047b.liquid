@@ -1,0 +1,816 @@
+{% doc %}
+  @prompt
+    Create a premium, minimal newsletter signup section for a modern streetwear / fashion brand.
+    
+    Match the provided reference image very closely in layout, spacing, typography, colors, alignment, and overall visual hierarchy.
+    
+    SECTION DESIGN:
+    - Full-width section with a very dark near-black background (#0D0B0C).
+    - Add a subtle warm dark brown/red radial glow behind the center-left area, fading smoothly into the black background.
+    - Section should feel premium, cinematic, modern, and slightly edgy.
+    - Keep the overall design clean with lots of empty space.
+    - Desktop section height should be approximately 315–330px.
+    
+    CONTENT:
+    At the top center, add a small uppercase eyebrow text:
+    "STAY CONNECTED"
+    
+    Style:
+    - Small font size around 9–11px
+    - Letter spacing around 4px
+    - Uppercase
+    - Warm orange/red color (#D96845)
+    
+    Below it, add the main heading:
+    "STAY OFF DUTY WITH US"
+    
+    Style:
+    - Large condensed-looking uppercase typography
+    - Approximately 34–38px on desktop
+    - Font weight around 400
+    - White/off-white color (#F5F2F0)
+    - Center aligned
+    - Tight line height
+    
+    Below the heading, add supporting text:
+    "Get new drops, exclusive offers, crew stories and rewards updates delivered to your inbox."
+    
+    Style:
+    - 13–14px
+    - Light gray (#A8A3A3)
+    - Maximum width around 500px
+    - Center aligned
+    - Line height around 1.5
+    - On desktop it should wrap into two lines similar to the reference.
+    
+    FORM:
+    Create a horizontal newsletter form centered below the description.
+    
+    The form should contain:
+    1. First name input
+       Placeholder: "First name (optional)"
+    2. Email input
+       Placeholder: "Your email address"
+    3. Button
+       Text: "Join the Crew"
+    
+    Input styling:
+    - Dark transparent/near-black background
+    - 1px subtle dark brown/gray border
+    - Rounded corners around 8px
+    - Height around 38px
+    - Text color white
+    - Placeholder color #777477
+    - First name input width around 143px
+    - Email input width around 187px
+    - Gap between fields around 9px
+    
+    Button styling:
+    - Width around 118px
+    - Height around 38px
+    - Rounded corners around 8px
+    - Bright coral-to-red gradient background
+    - Approximate colors: #FF3D5A to #FF6848
+    - White text
+    - Font size around 12px
+    - Medium font weight
+    - Text: "Join the Crew"
+    
+    Place all three form elements on one horizontal row on desktop.
+    
+    PRIVACY TEXT:
+    Under the form, centered:
+    "We respect your privacy. No spam, ever. Unsubscribe anytime."
+    
+    Style:
+    - 9–10px
+    - Gray color (#777474)
+    - Add approximately 12px spacing below the form.
+    
+    RESPONSIVE DESIGN:
+    - On mobile, stack the inputs and button vertically.
+    - Inputs and button should become full width with a maximum width around 360px.
+    - Maintain comfortable spacing and preserve the centered layout.
+    - Reduce heading size to approximately 28–30px on mobile.
+    - Keep the dark gradient/glow background.
+    - Ensure the section does not become excessively tall on mobile.
+    
+    SHOPIFY FUNCTIONALITY:
+    - Use Shopify's native newsletter/customer form functionality so email submissions work with Shopify's customer/newsletter system.
+    - Make all text editable through the Shopify Theme Editor.
+    - Make eyebrow text, heading, description, placeholders, button text, and privacy text editable.
+    - Make background color, glow color, text colors, button colors, border radius, and section spacing configurable where practical.
+    - Use semantic HTML and accessible labels.
+    - Include proper focus states for inputs and button.
+    - Do not add unnecessary icons, images, cards, borders, or decorative elements.
+    - Do not change the overall layout from the reference image.
+    
+    IMPORTANT:
+    The final result should visually resemble the supplied reference: a compact premium newsletter CTA with centered typography, horizontal form, dark black/brown atmospheric gradient, and coral-red CTA button.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-newsletter-signup-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+    overflow: hidden;
+    min-height: {{ block.settings.section_min_height }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-newsletter-signup-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, {{ block.settings.glow_color }} 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    opacity: {{ block.settings.glow_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ai-newsletter-signup__container-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .ai-newsletter-signup__eyebrow-{{ ai_gen_id }} {
+    font-size: {{ block.settings.eyebrow_size }}px;
+    color: {{ block.settings.eyebrow_color }};
+    text-transform: uppercase;
+    letter-spacing: {{ block.settings.eyebrow_letter_spacing }}px;
+    margin: 0 0 12px;
+    font-weight: 400;
+  }
+
+  .ai-newsletter-signup__heading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 0 0 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-newsletter-signup__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    line-height: 1.5;
+    max-width: 520px;
+    margin: 0 auto 28px;
+  }
+
+  .ai-newsletter-signup__form-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: {{ block.settings.form_gap }}px;
+    margin-bottom: {{ block.settings.privacy_spacing }}px;
+    flex-wrap: wrap;
+  }
+
+  .ai-newsletter-signup__input-{{ ai_gen_id }} {
+    background-color: {{ block.settings.input_background }};
+    border: {{ block.settings.input_border_width }}px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    height: {{ block.settings.input_height }}px;
+    padding: 0 16px;
+    color: {{ block.settings.input_text_color }};
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .ai-newsletter-signup__input-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.placeholder_color }};
+  }
+
+  .ai-newsletter-signup__input-{{ ai_gen_id }}:focus {
+    border-color: {{ block.settings.input_focus_border_color }};
+  }
+
+  .ai-newsletter-signup__input--firstname-{{ ai_gen_id }} {
+    width: {{ block.settings.firstname_width }}px;
+  }
+
+  .ai-newsletter-signup__input--email-{{ ai_gen_id }} {
+    width: {{ block.settings.email_width }}px;
+  }
+
+  .ai-newsletter-signup__button-{{ ai_gen_id }} {
+    width: {{ block.settings.button_width }}px;
+    height: {{ block.settings.input_height }}px;
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    background: linear-gradient(135deg, {{ block.settings.button_gradient_start }} 0%, {{ block.settings.button_gradient_end }} 100%);
+    color: {{ block.settings.button_text_color }};
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+  }
+
+  .ai-newsletter-signup__button-{{ ai_gen_id }}:hover {
+    opacity: 0.9;
+  }
+
+  .ai-newsletter-signup__button-{{ ai_gen_id }}:active {
+    transform: scale(0.98);
+  }
+
+  .ai-newsletter-signup__privacy-{{ ai_gen_id }} {
+    font-size: {{ block.settings.privacy_size }}px;
+    color: {{ block.settings.privacy_color }};
+    margin: 0;
+  }
+
+  .ai-newsletter-signup__message-{{ ai_gen_id }} {
+    font-size: 13px;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .ai-newsletter-signup__success-{{ ai_gen_id }} {
+    color: {{ block.settings.success_color }};
+  }
+
+  .ai-newsletter-signup__error-{{ ai_gen_id }} {
+    color: {{ block.settings.error_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-newsletter-signup-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top_mobile }}px 20px {{ block.settings.section_padding_bottom_mobile }}px;
+      min-height: auto;
+    }
+
+    .ai-newsletter-signup__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size_mobile }}px;
+    }
+
+    .ai-newsletter-signup__form-wrapper-{{ ai_gen_id }} {
+      flex-direction: column;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ai-newsletter-signup__input--firstname-{{ ai_gen_id }},
+    .ai-newsletter-signup__input--email-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-newsletter-signup__button-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<newsletter-signup-{{ ai_gen_id }}
+  class="ai-newsletter-signup-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-newsletter-signup__container-{{ ai_gen_id }}">
+    {% if block.settings.eyebrow_text != blank %}
+      <div class="ai-newsletter-signup__eyebrow-{{ ai_gen_id }}">
+        {{ block.settings.eyebrow_text }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-newsletter-signup__heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+      <p class="ai-newsletter-signup__description-{{ ai_gen_id }}">
+        {{ block.settings.description }}
+      </p>
+    {% endif %}
+
+    {% form 'customer', class: 'ai-newsletter-signup__form-{{ ai_gen_id }}' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      
+      <div class="ai-newsletter-signup__form-wrapper-{{ ai_gen_id }}">
+        <input
+          type="text"
+          name="contact[first_name]"
+          class="ai-newsletter-signup__input-{{ ai_gen_id }} ai-newsletter-signup__input--firstname-{{ ai_gen_id }}"
+          placeholder="{{ block.settings.firstname_placeholder }}"
+          autocomplete="given-name"
+        >
+        
+        <input
+          type="email"
+          name="contact[email]"
+          class="ai-newsletter-signup__input-{{ ai_gen_id }} ai-newsletter-signup__input--email-{{ ai_gen_id }}"
+          placeholder="{{ block.settings.email_placeholder }}"
+          required
+          autocomplete="email"
+          aria-required="true"
+          {% if form.errors %}
+            aria-invalid="true"
+            aria-describedby="ai-newsletter-signup-error-{{ ai_gen_id }}"
+          {% endif %}
+          {% if form.posted_successfully? %}
+            aria-describedby="ai-newsletter-signup-success-{{ ai_gen_id }}"
+          {% endif %}
+        >
+        
+        <button
+          type="submit"
+          class="ai-newsletter-signup__button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_text }}
+        </button>
+      </div>
+
+      {% if block.settings.privacy_text != blank %}
+        <p class="ai-newsletter-signup__privacy-{{ ai_gen_id }}">
+          {{ block.settings.privacy_text }}
+        </p>
+      {% endif %}
+
+      {% if form.posted_successfully? %}
+        <div
+          id="ai-newsletter-signup-success-{{ ai_gen_id }}"
+          class="ai-newsletter-signup__message-{{ ai_gen_id }} ai-newsletter-signup__success-{{ ai_gen_id }}"
+        >
+          {{ block.settings.success_message }}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div
+          id="ai-newsletter-signup-error-{{ ai_gen_id }}"
+          class="ai-newsletter-signup__message-{{ ai_gen_id }} ai-newsletter-signup__error-{{ ai_gen_id }}"
+        >
+          {{ form.errors.messages.email }}
+        </div>
+      {% endif %}
+    {% endform %}
+  </div>
+</newsletter-signup-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class NewsletterSignup{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const form = this.querySelector('.ai-newsletter-signup__form-{{ ai_gen_id }}');
+        if (!form) return;
+
+        form.addEventListener('submit', function(e) {
+          const emailInput = form.querySelector('input[type="email"]');
+          if (!emailInput.value) {
+            e.preventDefault();
+          }
+        });
+      }
+    }
+
+    customElements.define('newsletter-signup-{{ ai_gen_id }}', NewsletterSignup{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Newsletter signup",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "STAY CONNECTED"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "STAY OFF DUTY WITH US"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Get new drops, exclusive offers, crew stories and rewards updates delivered to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "firstname_placeholder",
+      "label": "First name placeholder",
+      "default": "First name (optional)"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Join the Crew"
+    },
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Privacy text",
+      "default": "We respect your privacy. No spam, ever. Unsubscribe anytime."
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for subscribing!"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_min_height",
+      "label": "Desktop min height",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Desktop top padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Desktop bottom padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_mobile",
+      "label": "Mobile top padding",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_mobile",
+      "label": "Mobile bottom padding",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#0D0B0C"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Glow color",
+      "default": "#4D2617"
+    },
+    {
+      "type": "range",
+      "id": "glow_opacity",
+      "label": "Glow opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Font size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "label": "Letter spacing",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Color",
+      "default": "#D96845"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Desktop font size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Mobile font size",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#F5F2F0"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Font size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Color",
+      "default": "#A8A3A3"
+    },
+    {
+      "type": "header",
+      "content": "Form inputs"
+    },
+    {
+      "type": "range",
+      "id": "form_gap",
+      "label": "Gap between fields",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "input_height",
+      "label": "Input height",
+      "min": 32,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "firstname_width",
+      "label": "First name width",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 145
+    },
+    {
+      "type": "range",
+      "id": "email_width",
+      "label": "Email width",
+      "min": 150,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 185
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Background color",
+      "default": "rgba(0, 0, 0, 0.3)"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Border color",
+      "default": "#3A3536"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_border_color",
+      "label": "Focus border color",
+      "default": "#5A4F50"
+    },
+    {
+      "type": "range",
+      "id": "input_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder color",
+      "default": "#777477"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "range",
+      "id": "button_width",
+      "label": "Width",
+      "min": 100,
+      "max": 180,
+      "step": 5,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "button_gradient_start",
+      "label": "Gradient start",
+      "default": "#FF3D5A"
+    },
+    {
+      "type": "color",
+      "id": "button_gradient_end",
+      "label": "Gradient end",
+      "default": "#FF6848"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Privacy text"
+    },
+    {
+      "type": "range",
+      "id": "privacy_size",
+      "label": "Font size",
+      "min": 8,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "privacy_spacing",
+      "label": "Top spacing",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "privacy_color",
+      "label": "Color",
+      "default": "#777474"
+    },
+    {
+      "type": "header",
+      "content": "Messages"
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Success color",
+      "default": "#4CAF50"
+    },
+    {
+      "type": "color",
+      "id": "error_color",
+      "label": "Error color",
+      "default": "#FF5252"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter signup"
+    }
+  ]
+}
+{% endschema %}
