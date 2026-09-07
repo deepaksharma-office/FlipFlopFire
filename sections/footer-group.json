@@ -99,11 +99,33 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "social_links_BmMDnX": {
+              "type": "social-links",
+              "name": "t:names.social_media_links",
+              "settings": {
+                "icon_color": "",
+                "facebook_url": "shopify://products/2-flip-flop-firefighter-velcro-patch",
+                "instagram_url": "shopify://products/4-flip-flop-firefighter-velcro-patch-with-gold-outline",
+                "youtube_url": "shopify://products/4-flip-flop-firefighter-golfer-sticker-copy",
+                "tiktok_url": "",
+                "twitter_url": "",
+                "threads_url": "",
+                "linkedin_url": "",
+                "bluesky_url": "",
+                "snapchat_url": "",
+                "pinterest_url": "",
+                "tumblr_url": "",
+                "vimeo_url": "",
+                "custom_url": ""
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "logo_BMj8qt",
-            "text_xpBDg9"
+            "text_xpBDg9",
+            "social_links_BmMDnX"
           ]
         },
         "menu_8Cr4VT": {
