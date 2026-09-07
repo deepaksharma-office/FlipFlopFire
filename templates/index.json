@@ -101,7 +101,7 @@
           "type": "button",
           "settings": {
             "label": "Shop Best Sellers",
-            "link": "",
+            "link": "shopify://collections/all",
             "new_tab": false,
             "button_style": "solid",
             "background": "#FF1675",
