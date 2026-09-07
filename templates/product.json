@@ -421,9 +421,18 @@
               },
               "blocks": {}
             },
-            "judge_me_reviews_preview_badge_jaJy6X": {
-              "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-              "settings": {}
+            "review_tUEphk": {
+              "type": "review",
+              "name": "t:names.product_review_stars",
+              "settings": {
+                "stars_style": "shaded",
+                "show_number": true,
+                "text_color": "",
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
             },
             "price_gLWgA6": {
               "type": "price",
@@ -465,7 +474,7 @@
           "block_order": [
             "product_card_gallery_DNizbJ",
             "product_title_M7MJkb",
-            "judge_me_reviews_preview_badge_jaJy6X",
+            "review_tUEphk",
             "price_gLWgA6",
             "swatches_PkReKk"
           ]
