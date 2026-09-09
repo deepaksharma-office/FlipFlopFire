@@ -105,11 +105,11 @@
               "name": "t:names.social_media_links",
               "settings": {
                 "icon_color": "",
-                "facebook_url": "shopify://products/2-flip-flop-firefighter-velcro-patch",
-                "instagram_url": "shopify://products/4-flip-flop-firefighter-velcro-patch-with-gold-outline",
-                "youtube_url": "shopify://products/4-flip-flop-firefighter-golfer-sticker-copy",
+                "facebook_url": "https://www.facebook.com/p/Flip-Flop-Firefighter-61593192447663/",
+                "instagram_url": "https://www.instagram.com/flipflopfirefighter/",
+                "youtube_url": "",
                 "tiktok_url": "",
-                "twitter_url": "",
+                "twitter_url": "https://x.com/flipflopfire",
                 "threads_url": "",
                 "linkedin_url": "",
                 "bluesky_url": "",
@@ -117,7 +117,7 @@
                 "pinterest_url": "",
                 "tumblr_url": "",
                 "vimeo_url": "",
-                "custom_url": ""
+                "custom_url": "https://shop.app/m/flipflopfire/collections/484729946390/life-style-collections"
               },
               "blocks": {}
             }
