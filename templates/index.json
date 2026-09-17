@@ -1346,7 +1346,7 @@
               "type": "collection-card",
               "name": "t:names.collection_card",
               "settings": {
-                "collection": "short-sleeves",
+                "collection": "long-sleeves",
                 "placement": "below_image",
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
