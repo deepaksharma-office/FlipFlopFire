@@ -781,7 +781,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/shorts",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
@@ -935,7 +935,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/short-sleeves",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
@@ -1128,7 +1128,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/women-s-apparel-strength-meets-style",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
@@ -1282,7 +1282,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/new-arrivals",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
@@ -1436,7 +1436,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/long-sleeves",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
