@@ -1192,7 +1192,7 @@
               "type": "collection-card",
               "name": "t:names.collection_card",
               "settings": {
-                "collection": "new-arrivals",
+                "collection": "tank-tops-1",
                 "placement": "below_image",
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
@@ -1282,7 +1282,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SHOP COLLECTION",
-                "link": "shopify://collections/new-arrivals",
+                "link": "shopify://collections/tank-tops-1",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
