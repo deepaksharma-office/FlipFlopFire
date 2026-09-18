@@ -754,7 +754,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Station-to-shoreline comfort in every step.</p>",
+                "text": "<p>Built for the grind, ready for the ride.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -908,7 +908,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Station-to-shoreline comfort in every step.</p>",
+                "text": "<p>Gear made to move with you.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1101,7 +1101,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Station-to-shoreline comfort in every step.</p>",
+                "text": "<p>Rugged style for every adventure.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1255,7 +1255,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Station-to-shoreline comfort in every step.</p>",
+                "text": "<p>Built tough. Worn everywhere.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1409,7 +1409,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Station-to-shoreline comfort in every step.</p>",
+                "text": "<p>From everyday missions to weekend escapes.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
