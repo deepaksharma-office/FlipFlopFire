@@ -953,7 +953,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Gear made to move with you.</p>",
+                "text": "<p>Always keep you warm</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1075,7 +1075,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Gear made to move with you.</p>",
+                "text": "<p>Special apparel for special occasion</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1604,7 +1604,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>From everyday missions to weekend escapes.</p>",
+                "text": "<p>Gift for your loved ones</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
