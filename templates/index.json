@@ -3650,6 +3650,64 @@
         "duration": 700
       }
     },
+    "partner_m9n3nY": {
+      "type": "partner",
+      "blocks": {
+        "feature_BFkCqN": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Icon-Trust.png",
+            "svg_icon": "",
+            "title": "BUILT ON\nTRUST"
+          }
+        },
+        "feature_aT8MeY": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Icon-Passion.png",
+            "svg_icon": "",
+            "title": "DRIVEN BY\nPASSION"
+          }
+        },
+        "feature_UJWReH": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Icon-Community.png",
+            "svg_icon": "",
+            "title": "DEDICATED TO\nOUR COMMUNITY"
+          }
+        },
+        "feature_fVYG4z": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Icon-Growth.png",
+            "svg_icon": "",
+            "title": "GROW\nTOGETHER"
+          }
+        }
+      },
+      "block_order": [
+        "feature_BFkCqN",
+        "feature_aT8MeY",
+        "feature_UJWReH",
+        "feature_fVYG4z"
+      ],
+      "name": "Partner With Us",
+      "settings": {
+        "title": "<p>PARTNER <strong>WITH US</strong></p>",
+        "title_size": 58,
+        "text_color": "#FFFFFF",
+        "highlight_color": "#FF007A",
+        "background_color": "#09080E",
+        "border_color": "#FF007A",
+        "divider_color": "#32202F",
+        "icon_size": 42,
+        "bottom_text": "TOGETHER, WE CAN MAKE A GREATER IMPACT.",
+        "max_width": 1450,
+        "padding_top": 90,
+        "padding_bottom": 90
+      }
+    },
     "slideshow_ErJRzt": {
       "type": "slideshow",
       "blocks": {
@@ -4185,6 +4243,7 @@
     "product_list_irGNqE",
     "brand_story_cTRigm",
     "rewards_program_mGEqQG",
+    "partner_m9n3nY",
     "slideshow_ErJRzt",
     "newsletter_crew_tXW3wF",
     "section_qtMfxT"
