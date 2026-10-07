@@ -50,7 +50,7 @@
                 <a
                   href="{{ link.url }}"
                   id="MenuItem-{{ link.handle }}"
-                  class="menu-list__item ambassador"
+                  class="menu-list__item"
                   {% if link.current %}
                     aria-current="page"
                   {% endif %}
@@ -106,7 +106,7 @@
           <a
             href="{{ link.url }}"
             data-skip-node-update="true"
-            class="menu-list__link ambassador{% if link.active %} menu-list__link--active{% endif %}"
+            class="menu-list__link {% if link.title == 'Ambassador Login' %}ambassador_item {% endif %} {% if link.active %} menu-list__link--active{% endif %}"
             {% if link.current %}
               aria-current="page"
             {% endif %}
