@@ -1,0 +1,256 @@
+{{ 'partner-with-us.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="PartnerWithUs-{{ section.id }}"
+  class="partner-with-us"
+  style="
+    --partner-bg: {{ section.settings.background_color }};
+    --partner-text: {{ section.settings.text_color }};
+    --partner-highlight: {{ section.settings.highlight_color }};
+    --partner-border: {{ section.settings.border_color }};
+    --partner-divider: {{ section.settings.divider_color }};
+    --partner-max-width: {{ section.settings.max_width }}px;
+    --partner-padding-top: {{ section.settings.padding_top }}px;
+    --partner-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --partner-title-size: {{ section.settings.title_size }}px;
+    --partner-icon-size: {{ section.settings.icon_size }}px;
+  "
+>
+  <div class="partner-with-us__inner">
+
+    {% if section.settings.title != blank %}
+      <div class="partner-with-us__heading">
+        <h2 class="partner-with-us__title">
+          {{ section.settings.title }}
+        </h2>
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="partner-with-us__items">
+        {% for block in section.blocks %}
+          <div
+            class="partner-with-us__item"
+            {{ block.shopify_attributes }}
+          >
+
+            {% if block.settings.icon != blank %}
+              <div class="partner-with-us__icon">
+                {{
+                  block.settings.icon
+                  | image_url: width: 300
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '80, 120, 180, 240, 300',
+                    sizes: '100px',
+                    alt: block.settings.title
+                }}
+              </div>
+            {% elsif block.settings.svg_icon != blank %}
+              <div class="partner-with-us__icon partner-with-us__icon--svg">
+                {{ block.settings.svg_icon }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.title != blank %}
+              <div class="partner-with-us__item-title">
+                {{ block.settings.title }}
+              </div>
+            {% endif %}
+
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.bottom_text != blank %}
+      <div class="partner-with-us__bottom">
+        {{ section.settings.bottom_text }}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Partner With Us",
+  "tag": "section",
+  "class": "section-partner-with-us",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<p>PARTNER <strong>WITH US</strong></p>",
+      "info": "Make the highlighted part bold. Bold text will use the highlight color."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 58
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlighted title color",
+      "default": "#FF007A"
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#09080E"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bottom box border",
+      "default": "#FF007A"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#32202F"
+    },
+
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+
+    {
+      "type": "header",
+      "content": "Bottom content"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom text",
+      "default": "TOGETHER, WE CAN MAKE A GREATER IMPACT."
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum content width",
+      "min": 700,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "default": 1450
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "html",
+          "id": "svg_icon",
+          "label": "SVG icon",
+          "info": "Optional. Used when no image is selected."
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Text",
+          "default": "BUILT ON\nTRUST"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partner With Us",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "BUILT ON\nTRUST"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "DRIVEN BY\nPASSION"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "DEDICATED TO\nOUR COMMUNITY"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "GROW\nTOGETHER"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
